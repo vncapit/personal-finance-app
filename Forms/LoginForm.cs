@@ -37,28 +37,15 @@ namespace Personal_finance_app.Forms
                     var res = cmd.ExecuteScalar();
                     if (res != null && res != DBNull.Value)
                     {
-                        using (MD5 md5 = MD5.Create())
+                        var hashPassword = HashHelper.GetMd5Hash(password);
+                        if (hashPassword == res.ToString())
                         {
-                            byte[] inputBytes = Encoding.UTF8.GetBytes(password);
-                            byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-                            // Convert to hex string
-                            StringBuilder sb = new StringBuilder();
-                            foreach (byte b in hashBytes)
-                            {
-                                sb.Append(b.ToString("x2")); // lowercase hex
-                            }
-
-                            var passwordMd5 = sb.ToString();
-                            if (passwordMd5 == res.ToString())
-                            {
-                                this.DialogResult = DialogResult.OK;
-                                this.Close();
-                                return;
-                            }
+                            this.DialogResult = DialogResult.OK;
+                            this.Close();
+                            return;
                         }
                     }
-                    MessageBox.Show("Invalid credentials");
+                    MessageBox.Show("Invalid username or password", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 }
             }
@@ -81,7 +68,7 @@ namespace Personal_finance_app.Forms
 
         private void validateLogin()
         {
-            if (tbx_username.Text.Trim().Length > 0 && tbx_password.Text.Trim().Length > 0)
+            if (!String.IsNullOrWhiteSpace(tbx_username.Text) && !String.IsNullOrWhiteSpace(tbx_password.Text))
             {
                 btn_login.Enabled = true;
             }
@@ -95,7 +82,9 @@ namespace Personal_finance_app.Forms
         {
             if (e.KeyCode == Keys.Enter && btn_login.Enabled)
             {
+                Cursor = Cursors.WaitCursor;
                 doLogin();
+                Cursor = Cursors.Default;
             }
         }
     }
