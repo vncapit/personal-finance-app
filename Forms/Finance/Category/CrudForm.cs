@@ -21,6 +21,8 @@ namespace Personal_finance_app.Forms.Finance.Category
             this.Type = type;
             InitializeComponent();
 
+            this.cbx_type.DropDownStyle = ComboBoxStyle.DropDownList;
+
             if (type == CrudEnum.Create)
             {
                 this.Text = "Add new Category";
@@ -41,7 +43,7 @@ namespace Personal_finance_app.Forms.Finance.Category
             this.cbx_type.Items.Clear();
             this.cbx_type.DisplayMember = "Name";
             this.cbx_type.ValueMember = "Value";
-            this.cbx_type.DataSource = EnumHelper<TypeEnum>.GetComboBoxItems();
+            this.cbx_type.DataSource = EnumHelper<TypeEnum>.GetComboBoxItems(false);
         }
 
         private void doCreate()
