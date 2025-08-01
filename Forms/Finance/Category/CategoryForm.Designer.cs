@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CategoryForm));
             panel1 = new Panel();
             groupBox2 = new GroupBox();
             btn_reset = new Button();
@@ -80,7 +81,7 @@
             // 
             btn_reset.BackColor = SystemColors.Info;
             btn_reset.Font = new Font("Segoe UI", 12F);
-            btn_reset.Image = Properties.Resources.refresh;
+            btn_reset.Image = (Image)resources.GetObject("btn_reset.Image");
             btn_reset.ImageAlign = ContentAlignment.MiddleLeft;
             btn_reset.Location = new Point(618, 29);
             btn_reset.Name = "btn_reset";
@@ -96,7 +97,7 @@
             // 
             btn_search.BackColor = SystemColors.GradientActiveCaption;
             btn_search.Font = new Font("Segoe UI", 12F);
-            btn_search.Image = Properties.Resources.search;
+            btn_search.Image = (Image)resources.GetObject("btn_search.Image");
             btn_search.ImageAlign = ContentAlignment.MiddleLeft;
             btn_search.Location = new Point(505, 29);
             btn_search.Name = "btn_search";
@@ -160,7 +161,7 @@
             // 
             btn_remove.BackColor = SystemColors.GradientActiveCaption;
             btn_remove.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            btn_remove.Image = Properties.Resources.delete;
+            btn_remove.Image = (Image)resources.GetObject("btn_remove.Image");
             btn_remove.ImageAlign = ContentAlignment.MiddleLeft;
             btn_remove.Location = new Point(230, 27);
             btn_remove.Name = "btn_remove";
@@ -176,7 +177,7 @@
             // 
             btn_add.BackColor = SystemColors.GradientActiveCaption;
             btn_add.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            btn_add.Image = Properties.Resources.add;
+            btn_add.Image = (Image)resources.GetObject("btn_add.Image");
             btn_add.ImageAlign = ContentAlignment.MiddleLeft;
             btn_add.Location = new Point(14, 27);
             btn_add.Name = "btn_add";
@@ -192,7 +193,7 @@
             // 
             btn_modify.BackColor = SystemColors.GradientActiveCaption;
             btn_modify.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            btn_modify.Image = Properties.Resources.edit;
+            btn_modify.Image = (Image)resources.GetObject("btn_modify.Image");
             btn_modify.ImageAlign = ContentAlignment.MiddleLeft;
             btn_modify.Location = new Point(113, 27);
             btn_modify.Name = "btn_modify";
