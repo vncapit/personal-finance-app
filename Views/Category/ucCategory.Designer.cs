@@ -1,13 +1,13 @@
-﻿namespace Personal_finance_app.Forms
+﻿namespace Personal_finance_app.Views
 {
-    partial class CategoryForm
+    partial class ucCategory
     {
-        /// <summary>
+        /// <summary> 
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
+        /// <summary> 
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -20,15 +20,16 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+        #region Component Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CategoryForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucCategory));
+            dgv_categories = new DataGridView();
             panel1 = new Panel();
             groupBox2 = new GroupBox();
             btn_reset = new Button();
@@ -42,13 +43,25 @@
             btn_add = new Button();
             btn_modify = new Button();
             panel2 = new Panel();
-            dgv_categories = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgv_categories).BeginInit();
             panel1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox1.SuspendLayout();
             panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgv_categories).BeginInit();
             SuspendLayout();
+            // 
+            // dgv_categories
+            // 
+            dgv_categories.AllowUserToAddRows = false;
+            dgv_categories.AllowUserToDeleteRows = false;
+            dgv_categories.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgv_categories.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_categories.Location = new Point(6, 12);
+            dgv_categories.Name = "dgv_categories";
+            dgv_categories.ReadOnly = true;
+            dgv_categories.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv_categories.Size = new Size(1232, 624);
+            dgv_categories.TabIndex = 0;
             // 
             // panel1
             // 
@@ -56,10 +69,10 @@
             panel1.BackColor = SystemColors.MenuBar;
             panel1.Controls.Add(groupBox2);
             panel1.Controls.Add(groupBox1);
-            panel1.Location = new Point(2, 1);
+            panel1.Location = new Point(3, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1244, 103);
-            panel1.TabIndex = 0;
+            panel1.Size = new Size(1250, 103);
+            panel1.TabIndex = 2;
             // 
             // groupBox2
             // 
@@ -210,57 +223,43 @@
             panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel2.BackColor = SystemColors.Control;
             panel2.Controls.Add(dgv_categories);
-            panel2.Location = new Point(2, 119);
+            panel2.Location = new Point(3, 121);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1244, 519);
-            panel2.TabIndex = 1;
+            panel2.Size = new Size(1250, 639);
+            panel2.TabIndex = 3;
             // 
-            // dgv_categories
-            // 
-            dgv_categories.AllowUserToAddRows = false;
-            dgv_categories.AllowUserToDeleteRows = false;
-            dgv_categories.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dgv_categories.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_categories.Location = new Point(6, 12);
-            dgv_categories.Name = "dgv_categories";
-            dgv_categories.ReadOnly = true;
-            dgv_categories.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgv_categories.Size = new Size(1235, 504);
-            dgv_categories.TabIndex = 0;
-            // 
-            // CategoryForm
+            // ucCategory
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1246, 650);
-            Controls.Add(panel2);
             Controls.Add(panel1);
-            Name = "CategoryForm";
-            Text = "CategoryForm";
+            Controls.Add(panel2);
+            Name = "ucCategory";
+            Size = new Size(1256, 777);
+            ((System.ComponentModel.ISupportInitialize)dgv_categories).EndInit();
             panel1.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
             groupBox1.ResumeLayout(false);
             panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dgv_categories).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Panel panel1;
-        private Panel panel2;
         private DataGridView dgv_categories;
-        private Button btn_add;
-        private Button btn_remove;
-        private Button btn_modify;
-        private Label label1;
-        private GroupBox groupBox1;
+        private Panel panel1;
         private GroupBox groupBox2;
+        private Button btn_reset;
         private Button btn_search;
         private TextBox tbx_name;
         private Label label2;
         private ComboBox cbx_type;
-        private Button btn_reset;
+        private Label label1;
+        private GroupBox groupBox1;
+        private Button btn_remove;
+        private Button btn_add;
+        private Button btn_modify;
+        private Panel panel2;
     }
 }

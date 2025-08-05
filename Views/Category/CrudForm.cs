@@ -12,7 +12,7 @@ using Personal_finance_app.Enums;
 using Personal_finance_app.Helpers;
 using Personal_finance_app.Models;
 
-namespace Personal_finance_app.Forms.Finance.Category
+namespace Personal_finance_app.Views.Category
 {
     public partial class CrudForm : Form
     {
@@ -21,37 +21,37 @@ namespace Personal_finance_app.Forms.Finance.Category
         private CategoryModel Category;
         public CrudForm(CrudEnum type, CategoryModel category = null)
         {
-            this.Type = type;
-            this.Category = category;
+            Type = type;
+            Category = category;
 
-            this.StartPosition = FormStartPosition.CenterParent;
+            StartPosition = FormStartPosition.CenterParent;
             InitializeComponent();
 
-            this.cbx_type.DropDownStyle = ComboBoxStyle.DropDownList;
-            this.cbx_type.Items.Clear();
-            this.cbx_type.DisplayMember = "Name";
-            this.cbx_type.ValueMember = "Value";
-            this.cbx_type.DataSource = EnumHelper<TypeEnum>.GetComboBoxItems(false);
+            cbx_type.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbx_type.Items.Clear();
+            cbx_type.DisplayMember = "Name";
+            cbx_type.ValueMember = "Value";
+            cbx_type.DataSource = EnumHelper<TypeEnum>.GetComboBoxItems(false);
 
             if (type == CrudEnum.Create)
             {
-                this.Text = "Add new Category";
-                this.btn_save.Text = "Add";
+                Text = "Add new Category";
+                btn_save.Text = "Add";
             }
             else if (type == CrudEnum.Update)
             {
-                this.Text = "Modify Category";
-                this.btn_save.Text = "Save";
+                Text = "Modify Category";
+                btn_save.Text = "Save";
 
                 if (category != null)
                 {
-                    this.cbx_type.SelectedValue = (int)category.Type;
-                    this.tbx_name.Text = category.Name;
+                    cbx_type.SelectedValue = (int)category.Type;
+                    tbx_name.Text = category.Name;
                 }
                 else
                 {
                     MessageBox.Show("Category data is not provided for update operation.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.Close();
+                    Close();
                 }
             }
 
@@ -59,7 +59,7 @@ namespace Personal_finance_app.Forms.Finance.Category
 
         private void doCreate()
         {
-            if (this.cbx_type.SelectedValue != null && !String.IsNullOrWhiteSpace(this.tbx_name.Text))
+            if (cbx_type.SelectedValue != null && !string.IsNullOrWhiteSpace(tbx_name.Text))
             {
                 try
                 {
@@ -69,7 +69,7 @@ namespace Personal_finance_app.Forms.Finance.Category
                         using (var cmd = new SqliteCommand(sql, conn))
                         {
                             cmd.Parameters.Clear();
-                            cmd.Parameters.AddWithValue("NAME", this.tbx_name.Text.Trim().ToLower());
+                            cmd.Parameters.AddWithValue("NAME", tbx_name.Text.Trim().ToLower());
                             var count = Convert.ToInt32(cmd.ExecuteScalar());
                             if (count > 0)
                             {
@@ -81,15 +81,15 @@ namespace Personal_finance_app.Forms.Finance.Category
                         using (var cmd = new SqliteCommand(sql, conn))
                         {
                             cmd.Parameters.Clear();
-                            cmd.Parameters.AddWithValue("TYPE", this.cbx_type.SelectedValue);
-                            cmd.Parameters.AddWithValue("NAME", this.tbx_name.Text.Trim());
+                            cmd.Parameters.AddWithValue("TYPE", cbx_type.SelectedValue);
+                            cmd.Parameters.AddWithValue("NAME", tbx_name.Text.Trim());
                             var timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
                             cmd.Parameters.AddWithValue("CREATED_AT", timestamp);
                             cmd.Parameters.AddWithValue("UPDATED_AT", timestamp);
 
                             var count = cmd.ExecuteNonQuery();
-                            this.DialogResult = DialogResult.OK;
-                            this.Close();
+                            DialogResult = DialogResult.OK;
+                            Close();
                         }
                     }
                 }
@@ -102,7 +102,7 @@ namespace Personal_finance_app.Forms.Finance.Category
 
         private void doUpdate()
         {
-            if (this.cbx_type.SelectedValue != null && !String.IsNullOrWhiteSpace(this.tbx_name.Text) && this.Category != null)
+            if (cbx_type.SelectedValue != null && !string.IsNullOrWhiteSpace(tbx_name.Text) && Category != null)
             {
                 try
                 {
@@ -112,8 +112,8 @@ namespace Personal_finance_app.Forms.Finance.Category
                         using (var cmd = new SqliteCommand(sql, conn))
                         {
                             cmd.Parameters.Clear();
-                            cmd.Parameters.AddWithValue("NAME", this.tbx_name.Text.Trim().ToLower());
-                            cmd.Parameters.AddWithValue("ID", this.Category.Id);
+                            cmd.Parameters.AddWithValue("NAME", tbx_name.Text.Trim().ToLower());
+                            cmd.Parameters.AddWithValue("ID", Category.Id);
                             var count = Convert.ToInt32(cmd.ExecuteScalar());
                             if (count > 0)
                             {
@@ -125,14 +125,14 @@ namespace Personal_finance_app.Forms.Finance.Category
                         using (var cmd = new SqliteCommand(sql, conn))
                         {
                             cmd.Parameters.Clear();
-                            cmd.Parameters.AddWithValue("TYPE", this.cbx_type.SelectedValue);
-                            cmd.Parameters.AddWithValue("NAME", this.tbx_name.Text.Trim());
+                            cmd.Parameters.AddWithValue("TYPE", cbx_type.SelectedValue);
+                            cmd.Parameters.AddWithValue("NAME", tbx_name.Text.Trim());
                             var timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
                             cmd.Parameters.AddWithValue("UPDATED_AT", timestamp);
-                            cmd.Parameters.AddWithValue("ID", this.Category.Id);
+                            cmd.Parameters.AddWithValue("ID", Category.Id);
                             var count = cmd.ExecuteNonQuery();
-                            this.DialogResult = DialogResult.OK;
-                            this.Close();
+                            DialogResult = DialogResult.OK;
+                            Close();
                         }
                     }
                 }
@@ -145,12 +145,12 @@ namespace Personal_finance_app.Forms.Finance.Category
 
         private void btn_save_Click(object sender, EventArgs e)
         {
-            if(this.Type == CrudEnum.Create)
+            if (Type == CrudEnum.Create)
             {
                 doCreate();
             }
 
-            if(this.Type == CrudEnum.Update)
+            if (Type == CrudEnum.Update)
             {
                 doUpdate();
             }

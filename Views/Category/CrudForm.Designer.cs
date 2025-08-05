@@ -1,4 +1,4 @@
-﻿namespace Personal_finance_app.Forms.Finance.Category
+﻿namespace Personal_finance_app.Views.Category
 {
     partial class CrudForm
     {

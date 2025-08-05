@@ -65,7 +65,7 @@
             pnl_placeholder.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pnl_placeholder.Location = new Point(257, 52);
             pnl_placeholder.Name = "pnl_placeholder";
-            pnl_placeholder.Size = new Size(1551, 724);
+            pnl_placeholder.Size = new Size(1598, 724);
             pnl_placeholder.TabIndex = 1;
             // 
             // panel2
@@ -75,7 +75,7 @@
             panel2.Controls.Add(lbl_menu);
             panel2.Location = new Point(257, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1551, 46);
+            panel2.Size = new Size(1598, 46);
             panel2.TabIndex = 2;
             // 
             // lbl_menu
@@ -92,7 +92,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1814, 777);
+            ClientSize = new Size(1861, 777);
             Controls.Add(panel2);
             Controls.Add(pnl_placeholder);
             Controls.Add(panel1);

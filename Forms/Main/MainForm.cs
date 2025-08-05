@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Personal_finance_app.Views;
+using Personal_finance_app.Views.Transaction;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -46,29 +48,46 @@ namespace Personal_finance_app.Forms
         {
             if (node.Nodes.Count == 0)
             {
-                Form childForm = new Form();
+                //Form childForm = new Form();
+                //switch (node.Tag)
+                //{
+                //    case "transaction":
+                //        childForm = new TransactionForm();
+                //        break;
+                //    case "category":
+                //        childForm = new CategoryForm();
+                //        break;
+                //    case "sys_user":
+                //        childForm = new SysUserForm();
+                //        break;
+                //    default:
+                //        break;
+                //}
+                //lbl_menu.Text = node.Text;
+                //this.pnl_placeholder.Controls.Clear();
+                //childForm.TopLevel = false;
+                //childForm.FormBorderStyle = FormBorderStyle.None;
+                //childForm.Dock = DockStyle.Fill;
+                //pnl_placeholder.Controls.Add(childForm);
+                //pnl_placeholder.Tag = childForm;
+                //childForm.Show();
+
+                UserControl uc = new UserControl();
                 switch (node.Tag)
                 {
                     case "transaction":
-                        childForm = new TransactionForm();
+                        uc = new ucTransaction();
                         break;
                     case "category":
-                        childForm = new CategoryForm();
-                        break;
-                    case "sys_user":
-                        childForm = new SysUserForm();
+                        uc = new ucCategory();
                         break;
                     default:
                         break;
                 }
                 lbl_menu.Text = node.Text;
                 this.pnl_placeholder.Controls.Clear();
-                childForm.TopLevel = false;
-                childForm.FormBorderStyle = FormBorderStyle.None;
-                childForm.Dock = DockStyle.Fill;
-                pnl_placeholder.Controls.Add(childForm);
-                pnl_placeholder.Tag = childForm;
-                childForm.Show();
+                uc.Dock = DockStyle.Fill;
+                pnl_placeholder.Controls.Add(uc);
             }
 
         }

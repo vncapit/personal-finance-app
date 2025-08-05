@@ -1,30 +1,29 @@
 ﻿using Microsoft.Data.Sqlite;
 using Personal_finance_app.Enums;
-using Personal_finance_app.Forms.Finance.Category;
+using Personal_finance_app.Views.Category;
 using Personal_finance_app.Helpers;
 using Personal_finance_app.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Personal_finance_app.Forms
+namespace Personal_finance_app.Views
 {
-    public partial class CategoryForm : Form
+    public partial class ucCategory : UserControl
     {
-        public CategoryForm()
+        public ucCategory()
         {
             InitializeComponent();
             initControls();
             reloadData();
         }
+
 
         private void initControls()
         {
@@ -41,7 +40,7 @@ namespace Personal_finance_app.Forms
             dgv_categories.Columns.Add(new DataGridViewTextBoxColumn { Name = "NO", DataPropertyName = "NO", HeaderText = "No.", Visible = true, Width = 90 });
             dgv_categories.Columns.Add(new DataGridViewTextBoxColumn { Name = "TYPE", DataPropertyName = "TYPE", Visible = false });
             dgv_categories.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID", DataPropertyName = "TYPE_TEXT", HeaderText = "Type", Visible = true, MinimumWidth = 180 });
-            dgv_categories.Columns.Add(new DataGridViewTextBoxColumn { Name = "NAME", DataPropertyName = "NAME", HeaderText = "Name", Visible = true, MinimumWidth = 510 });
+            dgv_categories.Columns.Add(new DataGridViewTextBoxColumn { Name = "NAME", DataPropertyName = "NAME", HeaderText = "Name", Visible = true, AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
             dgv_categories.Columns.Add(new DataGridViewTextBoxColumn { Name = "CREATED_AT", DataPropertyName = "CREATED_AT", Visible = false });
             dgv_categories.Columns.Add(new DataGridViewTextBoxColumn { Name = "CREATED_AT_TEXT", DataPropertyName = "CREATED_AT_TEXT", HeaderText = "Created At", Visible = true, MinimumWidth = 200 });
             dgv_categories.Columns.Add(new DataGridViewTextBoxColumn { Name = "UPDATED_AT", DataPropertyName = "UPDATED_AT", Visible = false });
@@ -59,7 +58,7 @@ namespace Personal_finance_app.Forms
 
         private void btn_modify_Click(object sender, EventArgs e)
         {
-            if(this.dgv_categories.SelectedRows.Count > 0)
+            if (this.dgv_categories.SelectedRows.Count > 0)
             {
                 var selectedRow = this.dgv_categories.SelectedRows[0];
                 var category = new CategoryModel();
@@ -69,7 +68,7 @@ namespace Personal_finance_app.Forms
                 category.CreatedAt = selectedRow.Cells["CREATED_AT"].Value.ToString();
                 category.UpdatedAt = selectedRow.Cells["UPDATED_AT"].Value.ToString();
                 var crudForm = new CrudForm(CrudEnum.Update, category);
-                if(crudForm.ShowDialog() == DialogResult.OK)
+                if (crudForm.ShowDialog() == DialogResult.OK)
                 {
                     this.reloadData();
                 }
@@ -82,13 +81,13 @@ namespace Personal_finance_app.Forms
 
         private void btn_remove_Click(object sender, EventArgs e)
         {
-            if(this.dgv_categories.SelectedRows.Count > 0)
+            if (this.dgv_categories.SelectedRows.Count > 0)
             {
                 var selectedRow = this.dgv_categories.SelectedRows[0];
                 var categoryId = Convert.ToInt32(selectedRow.Cells["ID"].Value);
                 var categoryName = selectedRow.Cells["NAME"].Value.ToString();
                 var confirmResult = MessageBox.Show($"Are you sure you want to delete this category: [{categoryName}]?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if(confirmResult == DialogResult.Yes)
+                if (confirmResult == DialogResult.Yes)
                 {
                     try
                     {
