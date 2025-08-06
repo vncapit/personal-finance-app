@@ -33,7 +33,7 @@
             dgv_transactions = new DataGridView();
             btn_remove = new Button();
             btn_add = new Button();
-            cbx_categories = new ComboBox();
+            cbx_category = new ComboBox();
             label7 = new Label();
             dpk_createdAtEndTime = new DateTimePicker();
             dpk_createdAtEndDate = new DateTimePicker();
@@ -81,6 +81,7 @@
             dgv_transactions.Location = new Point(0, 3);
             dgv_transactions.Name = "dgv_transactions";
             dgv_transactions.ReadOnly = true;
+            dgv_transactions.RowHeadersVisible = false;
             dgv_transactions.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv_transactions.Size = new Size(1551, 451);
             dgv_transactions.TabIndex = 0;
@@ -118,19 +119,19 @@
             btn_add.UseVisualStyleBackColor = false;
             btn_add.Click += btn_add_Click;
             // 
-            // cbx_categories
+            // cbx_category
             // 
-            cbx_categories.FormattingEnabled = true;
-            cbx_categories.Location = new Point(306, 35);
-            cbx_categories.Name = "cbx_categories";
-            cbx_categories.Size = new Size(210, 29);
-            cbx_categories.TabIndex = 23;
+            cbx_category.FormattingEnabled = true;
+            cbx_category.Location = new Point(306, 35);
+            cbx_category.Name = "cbx_category";
+            cbx_category.Size = new Size(210, 29);
+            cbx_category.TabIndex = 23;
             // 
             // label7
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label7.Location = new Point(859, 76);
+            label7.Location = new Point(862, 76);
             label7.Name = "label7";
             label7.Size = new Size(16, 21);
             label7.TabIndex = 22;
@@ -147,17 +148,17 @@
             // dpk_createdAtEndDate
             // 
             dpk_createdAtEndDate.Format = DateTimePickerFormat.Short;
-            dpk_createdAtEndDate.Location = new Point(886, 73);
+            dpk_createdAtEndDate.Location = new Point(891, 73);
             dpk_createdAtEndDate.Name = "dpk_createdAtEndDate";
-            dpk_createdAtEndDate.Size = new Size(134, 29);
+            dpk_createdAtEndDate.Size = new Size(129, 29);
             dpk_createdAtEndDate.TabIndex = 20;
             // 
             // dpk_createdAtStartTime
             // 
             dpk_createdAtStartTime.Format = DateTimePickerFormat.Time;
-            dpk_createdAtStartTime.Location = new Point(736, 73);
+            dpk_createdAtStartTime.Location = new Point(732, 73);
             dpk_createdAtStartTime.Name = "dpk_createdAtStartTime";
-            dpk_createdAtStartTime.Size = new Size(112, 29);
+            dpk_createdAtStartTime.Size = new Size(115, 29);
             dpk_createdAtStartTime.TabIndex = 19;
             // 
             // dpk_createdAtStartDate
@@ -165,7 +166,7 @@
             dpk_createdAtStartDate.Format = DateTimePickerFormat.Short;
             dpk_createdAtStartDate.Location = new Point(595, 73);
             dpk_createdAtStartDate.Name = "dpk_createdAtStartDate";
-            dpk_createdAtStartDate.Size = new Size(134, 29);
+            dpk_createdAtStartDate.Size = new Size(131, 29);
             dpk_createdAtStartDate.TabIndex = 18;
             // 
             // label6
@@ -287,9 +288,9 @@
             label2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.Location = new Point(207, 38);
             label2.Name = "label2";
-            label2.Size = new Size(93, 21);
+            label2.Size = new Size(82, 21);
             label2.TabIndex = 5;
-            label2.Text = "Categories:";
+            label2.Text = "Category:";
             // 
             // cbx_type
             // 
@@ -311,7 +312,7 @@
             // 
             // groupBox2
             // 
-            groupBox2.Controls.Add(cbx_categories);
+            groupBox2.Controls.Add(cbx_category);
             groupBox2.Controls.Add(label7);
             groupBox2.Controls.Add(dpk_createdAtEndTime);
             groupBox2.Controls.Add(dpk_createdAtEndDate);
@@ -381,7 +382,7 @@
         private DataGridView dgv_transactions;
         private Button btn_remove;
         private Button btn_add;
-        private ComboBox cbx_categories;
+        private ComboBox cbx_category;
         private Label label7;
         private DateTimePicker dpk_createdAtEndTime;
         private DateTimePicker dpk_createdAtEndDate;

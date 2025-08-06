@@ -23,11 +23,27 @@ namespace Personal_finance_app.Views.Transaction
 
         private void initControls()
         {
+            // Datetime range:
+            this.dpk_createdAtStartDate.Format = DateTimePickerFormat.Short;
+            this.dpk_createdAtEndDate.Format = DateTimePickerFormat.Short;
+            this.dpk_createdAtStartTime.Format = DateTimePickerFormat.Time;
+            this.dpk_createdAtEndTime.Format = DateTimePickerFormat.Time;
+            this.dpk_createdAtStartTime.ShowUpDown = true;
+            this.dpk_createdAtEndTime.ShowUpDown = true;
+
+            this.dpk_createdAtStartDate.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            this.dpk_createdAtEndDate.Value = DateTime.Now;
+            this.dpk_createdAtStartTime.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
+            this.dpk_createdAtEndTime.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+
+            // Type
+            this.cbx_type.DropDownStyle = ComboBoxStyle.DropDownList;
             this.cbx_type.Items.Clear();
             this.cbx_type.DisplayMember = "Name";
             this.cbx_type.ValueMember = "Value";
             this.cbx_type.DataSource = EnumHelper<TypeEnum>.GetComboBoxItems();
 
+            // DataGridView
             dgv_transactions.MultiSelect = false;
             dgv_transactions.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv_transactions.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -42,12 +58,54 @@ namespace Personal_finance_app.Views.Transaction
             dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "CREATED_BY_USERNAME", DataPropertyName = "CREATED_BY_USERNAME", HeaderText = "Created By", Visible = true, MinimumWidth = 150 });
             dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "CREATED_AT_TEXT", DataPropertyName = "CREATED_AT_TEXT", HeaderText = "Created At", Visible = true, MinimumWidth = 200 });
             dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "UPDATED_AT_TEXT", DataPropertyName = "UPDATED_AT_TEXT", HeaderText = "Updated At", Visible = true, MinimumWidth = 200 });
-            dgv_transactions.Columns.Add(new DataGridViewButtonColumn { Name = "ATTACHMENTS", DataPropertyName = "ATTACHMENTS", HeaderText = "Attachments", Visible = true, Width = 110 });
+            dgv_transactions.Columns.Add(new DataGridViewButtonColumn { Name = "ATTACHMENTS", DataPropertyName = "ATTACHMENTS", HeaderText = "Attachments", Visible = true, Width = 110, FlatStyle = FlatStyle.Flat });
 
             dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "CATEGORY_ID", DataPropertyName = "CATEGORY_ID", Visible = false });
             dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "CREATED_AT", DataPropertyName = "CREATED_AT", Visible = false });
             dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "UPDATED_AT", DataPropertyName = "UPDATED_AT", Visible = false });
             dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID", DataPropertyName = "ID", HeaderText = "ID", Visible = false });
+
+            // Categories:
+            this.cbx_category.DropDownStyle = ComboBoxStyle.DropDownList;
+            using (var conn = DbHelper.GetConnection())
+            {
+                using (var cmd = new SqliteCommand("SELECT ID, NAME FROM CATEGORIES", conn))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        var categories = new List<ComboBoxItem>();
+                        categories.Add(new ComboBoxItem("", -1));
+                        while (reader.Read())
+                        {
+                            categories.Add(new ComboBoxItem(reader["NAME"].ToString(), Convert.ToInt32(reader["ID"])));
+                        }
+                        this.cbx_category.DataSource = categories;
+                        this.cbx_category.DisplayMember = "Name";
+                        this.cbx_category.ValueMember = "Value";
+                    }
+                }
+            }
+
+            // Users:
+            this.cbx_createdBy.DropDownStyle = ComboBoxStyle.DropDownList;
+            using (var conn = DbHelper.GetConnection())
+            {
+                using (var cmd = new SqliteCommand("SELECT ID, USERNAME FROM USERS", conn))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        var categories = new List<ComboBoxItem>();
+                        categories.Add(new ComboBoxItem("", -1));
+                        while (reader.Read())
+                        {
+                            categories.Add(new ComboBoxItem(reader["USERNAME"].ToString(), Convert.ToInt32(reader["ID"])));
+                        }
+                        this.cbx_createdBy.DataSource = categories;
+                        this.cbx_createdBy.DisplayMember = "Name";
+                        this.cbx_createdBy.ValueMember = "Value";
+                    }
+                }
+            }
         }
 
 
@@ -78,20 +136,46 @@ namespace Personal_finance_app.Views.Transaction
 
             var query = new StringBuilder(@"SELECT t.ID, t.NAME, t.CATEGORY_ID, t.AMOUNT, t.DESC, t.ATTACHMENTS, t.CREATED_AT, t.UPDATED_AT, t.CREATED_AT
                                             , c.TYPE, c.NAME AS CATEGORY_NAME, u.USERNAME AS CREATED_BY_USERNAME
-                                            FROM TRANSACTIONS t LEFT JOIN CATEGORIES c ON t.CATEGORY_ID = c.ID
-                                            LEFT JOIN USERS u ON t.CREATED_BY = u.ID WHERE 1 = 1");
+                                            FROM TRANSACTIONS t INNER JOIN CATEGORIES c ON t.CATEGORY_ID = c.ID
+                                            INNER JOIN USERS u ON t.CREATED_BY = u.ID WHERE 1 = 1");
             var parameters = new List<SqliteParameter>();
 
             if (this.cbx_type.SelectedValue != null && (int)this.cbx_type.SelectedValue >= 0)
             {
-                query.Append(" AND TYPE = @type");
+                query.Append(" AND c.TYPE = @type");
                 parameters.Add(new SqliteParameter("@type", (int)this.cbx_type.SelectedValue));
             }
 
             if (!string.IsNullOrWhiteSpace(tbx_name.Text))
             {
-                query.Append(" AND LOWER(NAME) LIKE @name");
+                query.Append(" AND LOWER(t.NAME) LIKE @name");
                 parameters.Add(new SqliteParameter("@name", $"%{tbx_name.Text.Trim().ToLower()}%"));
+            }
+
+            if (this.cbx_category.SelectedValue != null && (int)this.cbx_category.SelectedValue >= 0)
+            {
+                query.Append(" AND c.ID = @categoryId");
+                parameters.Add(new SqliteParameter("@categoryId", (int)this.cbx_category.SelectedValue));
+            }
+
+            {
+                query.Append(" AND LOWER(t.DESC) LIKE @desc");
+                parameters.Add(new SqliteParameter("@desc", $"%{tbx_description.Text.Trim().ToLower()}%"));
+            }
+
+            if (this.cbx_createdBy.SelectedValue != null && (int)this.cbx_createdBy.SelectedValue >= 0)
+            {
+                query.Append(" AND t.CREATED_BY = @createdBy");
+                parameters.Add(new SqliteParameter("@createdBy", (int)this.cbx_createdBy.SelectedValue));
+            }
+
+            {
+                var startDate = this.dpk_createdAtStartDate.Value.Date + this.dpk_createdAtStartTime.Value.TimeOfDay;
+                query.Append(" AND t.CREATED_AT >= @createdAtStart");
+                parameters.Add(new SqliteParameter("@createdAtStart", startDate.ToString("yyyyMMddHHmmss")));
+                var endDate = this.dpk_createdAtEndDate.Value.Date + this.dpk_createdAtEndTime.Value.TimeOfDay;
+                query.Append(" AND t.CREATED_AT <= @createdAtEnd");
+                parameters.Add(new SqliteParameter("@createdAtEnd", endDate.ToString("yyyyMMddHHmmss")));
             }
 
             using (var conn = DbHelper.GetConnection())
@@ -128,6 +212,15 @@ namespace Personal_finance_app.Views.Transaction
             this.cbx_type.SelectedIndex = -1;
             this.cbx_type.Text = "";
             this.tbx_name.Text = "";
+            this.cbx_category.SelectedIndex = -1;
+            this.cbx_category.Text = "";
+            this.tbx_description.Text = "";
+            this.cbx_createdBy.SelectedIndex = -1;
+            this.cbx_createdBy.Text = "";
+            this.dpk_createdAtStartDate.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            this.dpk_createdAtStartTime.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
+            this.dpk_createdAtEndDate.Value = DateTime.Now;
+            this.dpk_createdAtEndTime.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
             this.reloadData();
         }
 
@@ -143,6 +236,9 @@ namespace Personal_finance_app.Views.Transaction
                 else
                 {
                     e.Value = "Download";
+                    var cell = row.Cells["ATTACHMENTS"];
+                    cell.Style.ForeColor = Color.Red;
+                    cell.Style.BackColor = Color.Gray;
                 }
                 e.FormattingApplied = true;
             }
