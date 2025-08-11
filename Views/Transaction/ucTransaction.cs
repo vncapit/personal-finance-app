@@ -45,6 +45,7 @@ namespace Personal_finance_app.Views.Transaction
 
             // DataGridView
             dgv_transactions.MultiSelect = false;
+            dgv_transactions.RowHeadersVisible = false;
             dgv_transactions.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv_transactions.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv_transactions.AutoGenerateColumns = false;
@@ -111,6 +112,11 @@ namespace Personal_finance_app.Views.Transaction
 
         private void btn_add_Click(object sender, EventArgs e)
         {
+            var form = new CrudForm(CrudEnum.Create);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                reloadData();
+            }
 
         }
 
@@ -178,6 +184,8 @@ namespace Personal_finance_app.Views.Transaction
                 parameters.Add(new SqliteParameter("@createdAtEnd", endDate.ToString("yyyyMMddHHmmss")));
             }
 
+            query.Append(" ORDER BY t.CREATED_AT DESC");
+
             using (var conn = DbHelper.GetConnection())
             {
                 using (var cmd = new SqliteCommand(query.ToString(), conn))
@@ -242,6 +250,11 @@ namespace Personal_finance_app.Views.Transaction
                 }
                 e.FormattingApplied = true;
             }
+        }
+
+        private void ucTransaction_Load(object sender, EventArgs e)
+        {
+            this.reloadData();
         }
     }
 }

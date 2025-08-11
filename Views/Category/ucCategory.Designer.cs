@@ -236,6 +236,7 @@
             Controls.Add(panel2);
             Name = "ucCategory";
             Size = new Size(1256, 777);
+            Load += ucCategory_Load;
             ((System.ComponentModel.ISupportInitialize)dgv_categories).EndInit();
             panel1.ResumeLayout(false);
             groupBox2.ResumeLayout(false);

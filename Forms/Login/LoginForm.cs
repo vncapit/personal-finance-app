@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using Personal_finance_app.Helpers;
 using Microsoft.Data.Sqlite;
+using Personal_finance_app.Models;
 
 namespace Personal_finance_app.Forms
 {
@@ -28,25 +29,39 @@ namespace Personal_finance_app.Forms
             var username = tbx_username.Text.Trim().ToLower();
             var password = tbx_password.Text.Trim();
 
-            var sql = "SELECT PASSWORD FROM USERS WHERE LOWER(USERNAME) = @username";
+            var sql = "SELECT * FROM USERS WHERE LOWER(USERNAME) = @username";
             using (var conn = DbHelper.GetConnection())
             {
                 using (var cmd = new SqliteCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("username", username);
-                    var res = cmd.ExecuteScalar();
-                    if (res != null && res != DBNull.Value)
-                    {
-                        var hashPassword = HashHelper.GetMd5Hash(password);
-                        if (hashPassword == res.ToString())
-                        {
-                            this.DialogResult = DialogResult.OK;
-                            this.Close();
-                            return;
+                    using (var reader = cmd.ExecuteReader()) {
+                        while (reader.Read()) {
+                            var dbPassword = reader["PASSWORD"].ToString();
+                            if(dbPassword != null && dbPassword == HashHelper.GetMd5Hash(password))
+                            {
+                                var dbId = Convert.ToInt32(reader["ID"]) ;
+                                var dbUsername = reader["USERNAME"].ToString();
+                                var dbCreatedAt = reader["CREATED_AT"].ToString();
+                                var dbUpdatedAt = reader["UPDATED_AT"].ToString();
+                                UserHelper.User = new UserModel
+                                {
+                                    Id = dbId,
+                                    Username = dbUsername,
+                                    Password = dbPassword,
+                                    CreatedAt = dbCreatedAt,
+                                    UpdatedAt = dbUpdatedAt
+                                };
+                                this.DialogResult = DialogResult.OK;
+                                this.Close();
+                                return;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Invalid username or password", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
                         }
                     }
-                    MessageBox.Show("Invalid username or password", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
                 }
             }
         }

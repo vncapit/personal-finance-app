@@ -367,6 +367,7 @@
             Controls.Add(panel1);
             Name = "ucTransaction";
             Size = new Size(1577, 753);
+            Load += ucTransaction_Load;
             panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgv_transactions).EndInit();
             groupBox1.ResumeLayout(false);

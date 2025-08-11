@@ -21,7 +21,6 @@ namespace Personal_finance_app.Views
         {
             InitializeComponent();
             initControls();
-            reloadData();
         }
 
 
@@ -36,6 +35,7 @@ namespace Personal_finance_app.Views
             dgv_categories.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv_categories.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv_categories.AutoGenerateColumns = false;
+            dgv_categories.RowHeadersVisible = false;
             dgv_categories.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID", DataPropertyName = "ID", HeaderText = "ID", Visible = false });
             dgv_categories.Columns.Add(new DataGridViewTextBoxColumn { Name = "NO", DataPropertyName = "NO", HeaderText = "No.", Visible = true, Width = 90 });
             dgv_categories.Columns.Add(new DataGridViewTextBoxColumn { Name = "TYPE", DataPropertyName = "TYPE", Visible = false });
@@ -146,6 +146,8 @@ namespace Personal_finance_app.Views
                 parameters.Add(new SqliteParameter("@name", $"%{tbx_name.Text.Trim().ToLower()}%"));
             }
 
+            query.Append(" ORDER BY UPDATED_AT DESC");
+
             using (var conn = DbHelper.GetConnection())
             {
                 using (var cmd = new SqliteCommand(query.ToString(), conn))
@@ -181,6 +183,11 @@ namespace Personal_finance_app.Views
             this.cbx_type.Text = "";
             this.tbx_name.Text = "";
             this.reloadData();
+        }
+
+        private void ucCategory_Load(object sender, EventArgs e)
+        {
+            reloadData();
         }
     }
 }
