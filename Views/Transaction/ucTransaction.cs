@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using Personal_finance_app.Enums;
 using Personal_finance_app.Helpers;
+using Personal_finance_app.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -62,6 +63,7 @@ namespace Personal_finance_app.Views.Transaction
             dgv_transactions.Columns.Add(new DataGridViewButtonColumn { Name = "ATTACHMENTS", DataPropertyName = "ATTACHMENTS", HeaderText = "Attachments", Visible = true, Width = 110, FlatStyle = FlatStyle.Flat });
 
             dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "CATEGORY_ID", DataPropertyName = "CATEGORY_ID", Visible = false });
+            dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "CREATED_BY", DataPropertyName = "CREATED_BY", Visible = false });
             dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "CREATED_AT", DataPropertyName = "CREATED_AT", Visible = false });
             dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "UPDATED_AT", DataPropertyName = "UPDATED_AT", Visible = false });
             dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID", DataPropertyName = "ID", HeaderText = "ID", Visible = false });
@@ -122,7 +124,29 @@ namespace Personal_finance_app.Views.Transaction
 
         private void btn_modify_Click(object sender, EventArgs e)
         {
-
+            if(dgv_transactions.SelectedRows.Count == 1)
+            {
+                var selectedRow = dgv_transactions.SelectedRows[0];
+                var transactionModel = new TransactionModel
+                {
+                    Id = Convert.ToInt32(selectedRow.Cells["ID"].Value),
+                    Type = (TypeEnum)Enum.Parse(typeof(TypeEnum), selectedRow.Cells["TYPE_TEXT"].Value.ToString()),
+                    Name = selectedRow.Cells["NAME"].Value.ToString(),
+                    CategoryId = Convert.ToInt32(selectedRow.Cells["CATEGORY_ID"].Value),
+                    CategoryName = selectedRow.Cells["CATEGORY_NAME"].Value.ToString(),
+                    Amount = Convert.ToDecimal(selectedRow.Cells["AMOUNT"].Value),
+                    Desc = selectedRow.Cells["DESC"].Value.ToString(),
+                    Attachments = selectedRow.Cells["ATTACHMENTS"].Value.ToString(),
+                    CreatedBy = Convert.ToInt32(selectedRow.Cells["CREATED_BY"].Value),
+                    CreatedAt = selectedRow.Cells["CREATED_AT"].Value.ToString(),
+                    UpdatedAt = selectedRow.Cells["UPDATED_AT"].Value.ToString()
+                };
+                var crudForm = new CrudForm(CrudEnum.Update, transactionModel);
+                if (crudForm.ShowDialog() == DialogResult.OK)
+                {
+                    reloadData();
+                }
+            }
         }
 
         private void btn_remove_Click(object sender, EventArgs e)
@@ -140,7 +164,7 @@ namespace Personal_finance_app.Views.Transaction
         {
             this.dgv_transactions.DataSource = null;
 
-            var query = new StringBuilder(@"SELECT t.ID, t.NAME, t.CATEGORY_ID, t.AMOUNT, t.DESC, t.ATTACHMENTS, t.CREATED_AT, t.UPDATED_AT, t.CREATED_AT
+            var query = new StringBuilder(@"SELECT t.ID, t.NAME, t.CATEGORY_ID, t.AMOUNT, t.DESC, t.ATTACHMENTS, t.CREATED_BY, t.UPDATED_AT, t.CREATED_AT
                                             , c.TYPE, c.NAME AS CATEGORY_NAME, u.USERNAME AS CREATED_BY_USERNAME
                                             FROM TRANSACTIONS t INNER JOIN CATEGORIES c ON t.CATEGORY_ID = c.ID
                                             INNER JOIN USERS u ON t.CREATED_BY = u.ID WHERE 1 = 1");

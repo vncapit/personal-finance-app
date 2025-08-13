@@ -24,6 +24,7 @@ namespace Personal_finance_app.Models
         public string CategoryName { get; set; }
         public string Desc { get; set; }
         public string Attachments { get; set; }
+        public int CreatedBy { get; set; }
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
     }

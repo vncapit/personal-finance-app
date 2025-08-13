@@ -43,7 +43,32 @@ namespace Personal_finance_app.Views.Transaction
                 if (transaction != null)
                 {
                     cbx_type.SelectedValue = (int)transaction.Type;
+                    cbx_category.SelectedValue = transaction.CategoryId;
                     tbx_name.Text = transaction.Name;
+                    tbx_amount.Text = transaction.Amount.ToString();
+                    tbx_description.Text = transaction.Desc;
+                    dpk_createdAtStartDate.Value = DateTime.ParseExact(transaction.CreatedAt, "yyyyMMddHHmmss", null);
+                    dpk_createdAtStartTime.Value = DateTime.ParseExact(transaction.CreatedAt, "yyyyMMddHHmmss", null);
+                    lv_attachments.Items.Clear();
+                    if(!string.IsNullOrEmpty(transaction.Attachments))
+                    {
+                        var resourceIds = transaction.Attachments.Split(',');
+                        var resources = ResourceHelper.getResources(resourceIds.Select(int.Parse).ToArray());
+                        if(resources.Count > 0)
+                        {
+                            var index = 0;
+                            foreach (var resource in resources)
+                            {
+                                index++;
+                                var lvItem = new ListViewItem { Text = index.ToString(), Tag = resource };
+                                lvItem.SubItems.Add(resource.Name);
+                                lvItem.SubItems.Add(resource.Size.ToString());
+                                lvItem.SubItems.Add(resource.Extension);
+                                lvItem.SubItems.Add(resource.Id.ToString());
+                                this.lv_attachments.Items.Add(lvItem);
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -123,7 +148,7 @@ namespace Personal_finance_app.Views.Transaction
                         // move file first, insert later
                         foreach (ListViewItem item in lv_attachments.Items)
                         {
-                            var resourceId = ResourceHelper.UploadResource(item.Tag.ToString());
+                            var resourceId = ResourceHelper.UploadResource(((ResourceModel)item.Tag).Path);
                             resourceIds.Add(resourceId);
                         }
                     }
@@ -172,35 +197,43 @@ namespace Personal_finance_app.Views.Transaction
 
         private void doUpdate()
         {
-            if (cbx_type.SelectedValue != null && !string.IsNullOrWhiteSpace(tbx_name.Text) && Transaction != null)
+            if (cbx_type.SelectedValue != null && cbx_category.SelectedValue != null && !string.IsNullOrEmpty(tbx_name.Text))
             {
                 try
                 {
-                    var sql = "SELECT COUNT(1) FROM CATEGORIES WHERE LOWER(NAME) = @NAME AND ID <> @ID";
+                    if(lv_attachments.Items.Count > 0)
+                    {
+                        // move file first, insert later
+                        var resourceIds = new List<int>();
+                        foreach (ListViewItem item in lv_attachments.Items)
+                        {
+                            if(((ResourceModel)item.Tag).Id != -1)
+                            {
+                                // already uploaded, skip
+                                resourceIds.Add(((ResourceModel)item.Tag).Id);
+                                continue;
+                            }
+                            var resourceId = ResourceHelper.UploadResource(((ResourceModel)item.Tag).Path);
+                            resourceIds.Add(resourceId);
+                        }
+                        Transaction.Attachments = string.Join(",", resourceIds);
+                    }
                     using (var conn = DbHelper.GetConnection())
                     {
+                        var sql = "UPDATE TRANSACTIONS SET CATEGORY_ID = @CATEGORY_ID, NAME = @NAME, AMOUNT = @AMOUNT, DESC = @DESC, CREATED_AT = @CREATED_AT, UPDATED_AT = @UPDATED_AT, ATTACHMENTS = @ATTACHMENTS WHERE ID = @ID";
                         using (var cmd = new SqliteCommand(sql, conn))
                         {
                             cmd.Parameters.Clear();
-                            cmd.Parameters.AddWithValue("NAME", tbx_name.Text.Trim().ToLower());
-                            cmd.Parameters.AddWithValue("ID", Transaction.Id);
-                            var count = Convert.ToInt32(cmd.ExecuteScalar());
-                            if (count > 0)
-                            {
-                                MessageBox.Show($"Category with name {tbx_name.Text} existed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return;
-                            }
-                        }
-                        sql = "UPDATE CATEGORIES SET TYPE = @TYPE, NAME = @NAME, UPDATED_AT = @UPDATED_AT WHERE ID = @ID";
-                        using (var cmd = new SqliteCommand(sql, conn))
-                        {
-                            cmd.Parameters.Clear();
-                            cmd.Parameters.AddWithValue("TYPE", cbx_type.SelectedValue);
+                            cmd.Parameters.AddWithValue("CATEGORY_ID", cbx_category.SelectedValue);
                             cmd.Parameters.AddWithValue("NAME", tbx_name.Text.Trim());
-                            var timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
-                            cmd.Parameters.AddWithValue("UPDATED_AT", timestamp);
+                            cmd.Parameters.AddWithValue("AMOUNT", Convert.ToDecimal(tbx_amount.Text.Trim()));
+                            cmd.Parameters.AddWithValue("DESC", tbx_description.Text.Trim());
+                            var tranCreatedAt = this.dpk_createdAtStartDate.Value.Date.Add(this.dpk_createdAtStartTime.Value.TimeOfDay).ToString("yyyyMMddHHmmss");
+                            cmd.Parameters.AddWithValue("CREATED_AT", tranCreatedAt);
+                            cmd.Parameters.AddWithValue("UPDATED_AT", DateTime.Now.ToString("yyyyMMddHHmmss"));
+                            cmd.Parameters.AddWithValue("ATTACHMENTS", Transaction.Attachments);
                             cmd.Parameters.AddWithValue("ID", Transaction.Id);
-                            var count = cmd.ExecuteNonQuery();
+                            cmd.ExecuteNonQuery();
                             DialogResult = DialogResult.OK;
                             Close();
                         }
@@ -247,7 +280,7 @@ namespace Personal_finance_app.Views.Transaction
                 {
                     index++;
                     var fileInfo = new FileInfo(fileName);
-                    var item = new ListViewItem { Text = index.ToString(), Tag = fileName };
+                    var item = new ListViewItem { Text = index.ToString(), Tag = new ResourceModel { Path = fileName, Id = -1 } };
                     item.SubItems.Add(fileInfo.Name);
                     item.SubItems.Add((fileInfo.Length / 1024).ToString());
                     item.SubItems.Add(fileInfo.Extension);

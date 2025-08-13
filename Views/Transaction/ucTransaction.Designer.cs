@@ -76,6 +76,8 @@
             // 
             dgv_transactions.AllowUserToAddRows = false;
             dgv_transactions.AllowUserToDeleteRows = false;
+            dgv_transactions.AllowUserToResizeColumns = false;
+            dgv_transactions.AllowUserToResizeRows = false;
             dgv_transactions.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgv_transactions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgv_transactions.Location = new Point(0, 3);
