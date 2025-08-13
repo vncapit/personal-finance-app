@@ -151,7 +151,42 @@ namespace Personal_finance_app.Views.Transaction
 
         private void btn_remove_Click(object sender, EventArgs e)
         {
-
+            if(dgv_transactions.SelectedRows.Count == 1)
+            {
+                var selectedRow = dgv_transactions.SelectedRows[0];
+                var transactionId = Convert.ToInt32(selectedRow.Cells["ID"].Value);
+                var transactionName = selectedRow.Cells["NAME"].Value.ToString();
+                if (MessageBox.Show($"Are you sure you want to delete the transaction '{transactionName}'?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    using (var conn = DbHelper.GetConnection())
+                    {
+                        using(var sqlTrans = conn.BeginTransaction())
+                        {
+                            try
+                            {
+                                using (var cmd = new SqliteCommand("DELETE FROM TRANSACTIONS WHERE ID = @id", conn))
+                                {
+                                    cmd.Transaction = sqlTrans;
+                                    cmd.Parameters.AddWithValue("@id", transactionId);
+                                    cmd.ExecuteNonQuery();
+                                }
+                                var attachments = selectedRow.Cells["ATTACHMENTS"].Value.ToString();
+                                if (!string.IsNullOrEmpty(attachments))
+                                {
+                                    ResourceHelper.RemoveResources(attachments.Split(",").Select(item => Convert.ToInt32(item)).ToArray(), conn, sqlTrans);
+                                }
+                                sqlTrans.Commit();
+                            }
+                            catch (Exception)
+                            {
+                                sqlTrans.Rollback();
+                                throw;
+                            }
+                        }
+                    }
+                    reloadData();
+                }
+            }
         }
 
 

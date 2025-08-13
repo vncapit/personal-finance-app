@@ -53,7 +53,7 @@ namespace Personal_finance_app.Views.Transaction
                     if(!string.IsNullOrEmpty(transaction.Attachments))
                     {
                         var resourceIds = transaction.Attachments.Split(',');
-                        var resources = ResourceHelper.getResources(resourceIds.Select(int.Parse).ToArray());
+                        var resources = ResourceHelper.GetResources(resourceIds.Select(int.Parse).ToArray());
                         if(resources.Count > 0)
                         {
                             var index = 0;

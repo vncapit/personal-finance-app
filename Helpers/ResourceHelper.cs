@@ -3,6 +3,7 @@ using Personal_finance_app.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,7 +41,51 @@ namespace Personal_finance_app.Helpers
 			}
         }
 
-        public static List<ResourceModel> getResources(int[] resourceIds)
+        public static void RemoveResources(int[] resourceIds, SqliteConnection conn, SqliteTransaction? trans = null )
+        {
+            try
+            {
+                var resources = GetResources(resourceIds);
+
+                var ids = resourceIds.Select((value, index) =>
+                {
+                    return $"@ID{index}";
+                }).ToArray();
+                var query = $"DELETE FROM RESOURCES WHERE ID IN ({string.Join(",", ids)}) ";
+                using (var cmd = new SqliteCommand(query, conn))
+                {
+                    var index = 0;
+                    foreach (var id in ids)
+                    {
+                        cmd.Parameters.AddWithValue(id, resourceIds[index]);
+                        index++;
+                    }
+                    if (trans != null)
+                    {
+                        cmd.Transaction = trans;
+                    }
+                        cmd.ExecuteNonQuery();
+                }
+
+                // remove files:
+                foreach (var item in resources)
+                {
+                    try
+                    {
+                        File.Delete(Path.Combine(RESOURCE_PATH, item.Path));
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static List<ResourceModel> GetResources(int[] resourceIds)
         {
             try
             {
