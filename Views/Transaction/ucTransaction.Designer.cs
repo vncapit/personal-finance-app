@@ -87,6 +87,7 @@
             dgv_transactions.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv_transactions.Size = new Size(1551, 451);
             dgv_transactions.TabIndex = 0;
+            dgv_transactions.CellContentClick += dgv_transactions_CellContentClick;
             dgv_transactions.CellFormatting += dgv_transactions_CellFormatting;
             // 
             // btn_remove

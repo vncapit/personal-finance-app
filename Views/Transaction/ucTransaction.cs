@@ -6,11 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.IO.Compression;
 
 namespace Personal_finance_app.Views.Transaction
 {
@@ -124,7 +127,7 @@ namespace Personal_finance_app.Views.Transaction
 
         private void btn_modify_Click(object sender, EventArgs e)
         {
-            if(dgv_transactions.SelectedRows.Count == 1)
+            if (dgv_transactions.SelectedRows.Count == 1)
             {
                 var selectedRow = dgv_transactions.SelectedRows[0];
                 var transactionModel = new TransactionModel
@@ -151,7 +154,7 @@ namespace Personal_finance_app.Views.Transaction
 
         private void btn_remove_Click(object sender, EventArgs e)
         {
-            if(dgv_transactions.SelectedRows.Count == 1)
+            if (dgv_transactions.SelectedRows.Count == 1)
             {
                 var selectedRow = dgv_transactions.SelectedRows[0];
                 var transactionId = Convert.ToInt32(selectedRow.Cells["ID"].Value);
@@ -160,7 +163,7 @@ namespace Personal_finance_app.Views.Transaction
                 {
                     using (var conn = DbHelper.GetConnection())
                     {
-                        using(var sqlTrans = conn.BeginTransaction())
+                        using (var sqlTrans = conn.BeginTransaction())
                         {
                             try
                             {
@@ -314,6 +317,52 @@ namespace Personal_finance_app.Views.Transaction
         private void ucTransaction_Load(object sender, EventArgs e)
         {
             this.reloadData();
+        }
+
+        private void dgv_transactions_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (e.RowIndex < 0 || e.ColumnIndex != dgv_transactions.Columns["ATTACHMENTS"].Index) return;
+                var idsString = dgv_transactions.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                if (string.IsNullOrWhiteSpace(idsString)) return;
+
+                var ids = idsString.Split(',').Select(id => Convert.ToInt32(id)).ToArray();
+                var filePaths = ResourceHelper.getResourceFilePaths(ids);
+
+                using (var saveFileDialog = new SaveFileDialog())
+                {
+                    saveFileDialog.Title = "Download attachments";
+                    saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    saveFileDialog.Filter = "All files (*.*)|*.*";
+                    saveFileDialog.FileName = $"{dgv_transactions.Rows[e.RowIndex].Cells["NAME"].Value}_{DateTime.Now.ToString("yyyyMMddHHmmss")}.zip";
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        Cursor = Cursors.WaitCursor;
+                        var zipPath = saveFileDialog.FileName;
+                        using (FileStream zipStream = new FileStream(zipPath, FileMode.Create))
+                        {
+                            using (ZipArchive zipArchive = new ZipArchive(zipStream, ZipArchiveMode.Create))
+                            {
+                                foreach (var file in filePaths)
+                                {
+                                    string entryName = Path.GetFileName(file);
+                                    zipArchive.CreateEntryFromFile(file, entryName, CompressionLevel.Optimal);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to download attachments", "Error", MessageBoxButtons.OK);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+
         }
     }
 }

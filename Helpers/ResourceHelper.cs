@@ -131,5 +131,11 @@ namespace Personal_finance_app.Helpers
                 throw;
             }
         }
+
+        public static string[] getResourceFilePaths(int[] ids)
+        {
+            var resourceModels = GetResources(ids);
+            return resourceModels.Select(r => Path.Combine(RESOURCE_PATH, r.Path)).ToArray();
+        }
     }
 }
