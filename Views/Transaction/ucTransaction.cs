@@ -55,7 +55,7 @@ namespace Personal_finance_app.Views.Transaction
             dgv_transactions.AutoGenerateColumns = false;
 
             dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "NO", DataPropertyName = "NO", HeaderText = "No.", Visible = true, Width = 80 });
-            dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "NAME", DataPropertyName = "Name", Visible = true, MinimumWidth = 200 });
+            dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "NAME", DataPropertyName = "NAME", HeaderText = "Name", Visible = true, MinimumWidth = 200 });
             dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "CATEGORY_NAME", DataPropertyName = "CATEGORY_NAME", HeaderText = "Category", Visible = true, Width = 180 });
             dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "TYPE_TEXT", DataPropertyName = "TYPE_TEXT", HeaderText = "Type", Visible = true, Width = 110 });
             dgv_transactions.Columns.Add(new DataGridViewTextBoxColumn { Name = "AMOUNT", DataPropertyName = "AMOUNT", HeaderText = "Amount", Visible = true, Width = 110 });
@@ -363,6 +363,24 @@ namespace Personal_finance_app.Views.Transaction
                 Cursor = Cursors.Default;
             }
 
+        }
+
+        private void btn_export_Click(object sender, EventArgs e)
+        {
+            string csv = Helpers.CsvHelper.DataGridViewToCsv(this.dgv_transactions);
+            using (var saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Title = "Export Data";
+                saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                saveFileDialog.Filter = "Csv files|*.csv";
+                saveFileDialog.FileName = $"Export_{DateTime.Now.ToString("yyyyMMddHHmmss")}.csv";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    Cursor = Cursors.WaitCursor;
+                    File.WriteAllText(saveFileDialog.FileName, csv, Encoding.UTF8);
+                    Cursor = Cursors.Default;
+                }
+            }
         }
     }
 }

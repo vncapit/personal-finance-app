@@ -43,6 +43,7 @@
             cbx_createdBy = new ComboBox();
             tbx_description = new TextBox();
             groupBox1 = new GroupBox();
+            btn_export = new Button();
             btn_modify = new Button();
             tbx_name = new TextBox();
             label4 = new Label();
@@ -199,6 +200,7 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(btn_export);
             groupBox1.Controls.Add(btn_remove);
             groupBox1.Controls.Add(btn_add);
             groupBox1.Controls.Add(btn_modify);
@@ -209,6 +211,22 @@
             groupBox1.TabIndex = 4;
             groupBox1.TabStop = false;
             groupBox1.Text = "Action";
+            // 
+            // btn_export
+            // 
+            btn_export.BackColor = SystemColors.GradientActiveCaption;
+            btn_export.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            btn_export.Image = (Image)resources.GetObject("btn_export.Image");
+            btn_export.ImageAlign = ContentAlignment.MiddleLeft;
+            btn_export.Location = new Point(14, 75);
+            btn_export.Name = "btn_export";
+            btn_export.Padding = new Padding(5, 0, 5, 0);
+            btn_export.Size = new Size(138, 41);
+            btn_export.TabIndex = 3;
+            btn_export.Text = "Export CSV";
+            btn_export.TextAlign = ContentAlignment.MiddleRight;
+            btn_export.UseVisualStyleBackColor = false;
+            btn_export.Click += btn_export_Click;
             // 
             // btn_modify
             // 
@@ -408,5 +426,6 @@
         private GroupBox groupBox2;
         private Label label5;
         private Panel panel1;
+        private Button btn_export;
     }
 }
