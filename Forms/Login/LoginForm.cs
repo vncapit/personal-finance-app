@@ -56,11 +56,8 @@ namespace Personal_finance_app.Forms
                                 this.Close();
                                 return;
                             }
-                            else
-                            {
-                                MessageBox.Show("Invalid username or password", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            }
                         }
+                        MessageBox.Show("Invalid username or password", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
             }
