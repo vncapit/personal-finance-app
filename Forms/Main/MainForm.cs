@@ -1,4 +1,5 @@
 ﻿using Personal_finance_app.Views;
+using Personal_finance_app.Views.Report;
 using Personal_finance_app.Views.Transaction;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace Personal_finance_app.Forms
             TreeNode finance = new TreeNode { Text = "Finance", Tag = "finance" };
             finance.Nodes.Add(new TreeNode { Text = "Transaction", Tag = "transaction" });
             finance.Nodes.Add(new TreeNode { Text = "Category ", Tag = "category" });
+            finance.Nodes.Add(new TreeNode { Text = "Report ", Tag = "report" });
             TreeNode system = new TreeNode { Text = "System", Tag = "system" };
             system.Nodes.Add(new TreeNode { Text = "User Management", Tag = "sys_user" });
 
@@ -48,30 +50,6 @@ namespace Personal_finance_app.Forms
         {
             if (node.Nodes.Count == 0)
             {
-                //Form childForm = new Form();
-                //switch (node.Tag)
-                //{
-                //    case "transaction":
-                //        childForm = new TransactionForm();
-                //        break;
-                //    case "category":
-                //        childForm = new CategoryForm();
-                //        break;
-                //    case "sys_user":
-                //        childForm = new SysUserForm();
-                //        break;
-                //    default:
-                //        break;
-                //}
-                //lbl_menu.Text = node.Text;
-                //this.pnl_placeholder.Controls.Clear();
-                //childForm.TopLevel = false;
-                //childForm.FormBorderStyle = FormBorderStyle.None;
-                //childForm.Dock = DockStyle.Fill;
-                //pnl_placeholder.Controls.Add(childForm);
-                //pnl_placeholder.Tag = childForm;
-                //childForm.Show();
-
                 UserControl uc = new UserControl();
                 switch (node.Tag)
                 {
@@ -80,6 +58,9 @@ namespace Personal_finance_app.Forms
                         break;
                     case "category":
                         uc = new ucCategory();
+                        break;
+                    case "report":
+                        uc = new ucReport();
                         break;
                     default:
                         break;
