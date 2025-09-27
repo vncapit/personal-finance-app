@@ -98,6 +98,7 @@
             Controls.Add(panel1);
             Name = "MainForm";
             Text = "Personal Finance Management";
+            Shown += MainForm_Shown;
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();

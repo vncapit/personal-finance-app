@@ -73,27 +73,13 @@ namespace Personal_finance_app.Views.Transaction
 
             // Categories:
             this.cbx_category.DropDownStyle = ComboBoxStyle.DropDownList;
-            using (var conn = DbHelper.GetConnection())
-            {
-                using (var cmd = new SqliteCommand("SELECT ID, NAME FROM CATEGORIES", conn))
-                {
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        var categories = new List<ComboBoxItem>();
-                        categories.Add(new ComboBoxItem("", -1));
-                        while (reader.Read())
-                        {
-                            categories.Add(new ComboBoxItem(reader["NAME"].ToString(), Convert.ToInt32(reader["ID"])));
-                        }
-                        this.cbx_category.DataSource = categories;
-                        this.cbx_category.DisplayMember = "Name";
-                        this.cbx_category.ValueMember = "Value";
-                    }
-                }
-            }
 
             // Users:
             this.cbx_createdBy.DropDownStyle = ComboBoxStyle.DropDownList;
+        }
+
+        private void LoadUsers()
+        {
             using (var conn = DbHelper.GetConnection())
             {
                 using (var cmd = new SqliteCommand("SELECT ID, USERNAME FROM USERS", conn))
@@ -109,6 +95,28 @@ namespace Personal_finance_app.Views.Transaction
                         this.cbx_createdBy.DataSource = categories;
                         this.cbx_createdBy.DisplayMember = "Name";
                         this.cbx_createdBy.ValueMember = "Value";
+                    }
+                }
+            }
+        }
+
+        private void LoadCategories()
+        {
+            using (var conn = DbHelper.GetConnection())
+            {
+                using (var cmd = new SqliteCommand("SELECT ID, NAME FROM CATEGORIES", conn))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        var categories = new List<ComboBoxItem>();
+                        categories.Add(new ComboBoxItem("", -1));
+                        while (reader.Read())
+                        {
+                            categories.Add(new ComboBoxItem(reader["NAME"].ToString(), Convert.ToInt32(reader["ID"])));
+                        }
+                        this.cbx_category.DataSource = categories;
+                        this.cbx_category.DisplayMember = "Name";
+                        this.cbx_category.ValueMember = "Value";
                     }
                 }
             }
@@ -316,7 +324,13 @@ namespace Personal_finance_app.Views.Transaction
 
         private void ucTransaction_Load(object sender, EventArgs e)
         {
-            this.reloadData();
+            this.BeginInvoke((MethodInvoker)(() =>
+            {
+                this.Refresh();  // force paint all controls
+                LoadCategories();
+                LoadUsers();
+                reloadData();
+            }));
         }
 
         private void dgv_transactions_CellContentClick(object sender, DataGridViewCellEventArgs e)

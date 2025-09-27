@@ -22,8 +22,6 @@ namespace Personal_finance_app.Forms
             this.StartPosition = FormStartPosition.CenterScreen;
 
             initMenuTree();
-
-            firstLoad();
         }
 
         private void initMenuTree()
@@ -44,6 +42,11 @@ namespace Personal_finance_app.Forms
             var firstLoadNode = this.treev_menus.Nodes[0].Nodes[0]; // transaction
             this.treev_menus.SelectedNode = firstLoadNode;
             loadChildForm(firstLoadNode);
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            firstLoad();
         }
 
         private void loadChildForm(TreeNode node)
