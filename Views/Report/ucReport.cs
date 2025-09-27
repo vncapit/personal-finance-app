@@ -28,7 +28,7 @@ namespace Personal_finance_app.Views.Report
             this.dpk_monthReport.CustomFormat = "MM/yyyy";
             dpk_monthReport.ShowUpDown = true;
 
-            chart_income_pie.Series.Clear();
+            this.InitReport();
         }
 
         private void dpk_monthReport_ValueChanged(object sender, EventArgs e)
@@ -42,6 +42,9 @@ namespace Personal_finance_app.Views.Report
             this.chart_expense_pie.Series.Clear();
             this.chart_income_column.Series.Clear();
             this.chart_expense_column.Series.Clear();
+
+            chart_income_column.ChartAreas[0].Axes[0].MajorGrid.Enabled = false;
+            chart_expense_column.ChartAreas[0].Axes[0].MajorGrid.Enabled = false;
 
             string month = this.dpk_monthReport.Value.ToString("yyyyMM");
             List<TransactionModel> transactions = new List<TransactionModel>();
@@ -75,32 +78,40 @@ namespace Personal_finance_app.Views.Report
 
             var incomes = transactions.FindAll(t => t.Type == Enums.TypeEnum.Income);
             var expenses = transactions.FindAll(t => t.Type == Enums.TypeEnum.Expense);
-
-            var incomeByCategory = incomes.GroupBy(i => i.CategoryName).Select(g => new { Category = g.Key, Total = g.Sum(i => i.Amount) });
-            var expenseByCategory = expenses.GroupBy(i => i.CategoryName).Select(g => new { Category = g.Key, Total = g.Sum(i => i.Amount) });
+            var totalIncome = incomes.Sum(i => i.Amount);
+            var totalExpense = expenses.Sum(e => e.Amount);
+            var incomeByCategory = incomes.GroupBy(i => i.CategoryName).Select(g => new { Category = g.Key, Total = g.Sum(i => i.Amount), Percent = (int)Math.Round(g.Sum(i => i.Amount) * 100 / totalIncome) });
+            var expenseByCategory = expenses.GroupBy(e => e.CategoryName).Select(g => new { Category = g.Key, Total = g.Sum(i => i.Amount), Percent = (int)Math.Round(g.Sum(i => i.Amount) * 100 / totalExpense) });
 
             var incomePieSeries = new Series { ChartType = SeriesChartType.Pie, Name = "Incomes Pie" };
             var incomeColumnSeries = new Series { ChartType = SeriesChartType.Column, Name = "Incomes" };
-            var index = 0;
+            incomeColumnSeries.XValueType = ChartValueType.String;
+            incomeColumnSeries.IsXValueIndexed = true;
+            incomeColumnSeries.IsValueShownAsLabel = true;
+
             foreach (var income in incomeByCategory)
             {
-                index++;
-                incomePieSeries.Points.AddXY(income.Category, income.Total);
-                var point = incomeColumnSeries.Points.AddXY(index, income.Total);
-                incomeColumnSeries.Points[point].Label = income.Category;
+                var p = incomePieSeries.Points.AddXY(income.Category, income.Total);
+                incomePieSeries.Points[p].Label = $"{income.Category} {income.Percent}%";
+                incomePieSeries.Points[p].LegendText = income.Category;
+                incomeColumnSeries.Points.AddXY(income.Category, income.Total);
             }
             chart_income_pie.Series.Add(incomePieSeries);
             chart_income_column.Series.Add(incomeColumnSeries);
 
             var expensePieSeries = new Series { ChartType = SeriesChartType.Pie, Name = "Expenses Pie" };
             var expenseColumnSeries = new Series { ChartType = SeriesChartType.Column, Name = "Expenses" };
-            index = 0;
+            expenseColumnSeries.XValueType = ChartValueType.String;
+            expenseColumnSeries.IsXValueIndexed = true;
+            expenseColumnSeries.IsValueShownAsLabel = true;
+
             foreach (var expense in expenseByCategory)
             {
-                index++;
-                expensePieSeries.Points.AddXY(expense.Category, expense.Total);
-                var point = expenseColumnSeries.Points.AddXY(index, expense.Total);
-                expenseColumnSeries.Points[point].Label = expense.Category;
+                var p = expensePieSeries.Points.AddXY(expense.Category, expense.Total);
+                expensePieSeries.Points[p].Label = $"{expense.Category} {expense.Percent}%";
+                expensePieSeries.Points[p].LegendText = expense.Category;
+                expenseColumnSeries.Points.AddXY(expense.Category, expense.Total);
+
             }
             chart_expense_pie.Series.Add(expensePieSeries);
             chart_expense_column.Series.Add(expenseColumnSeries);

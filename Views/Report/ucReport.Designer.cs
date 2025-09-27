@@ -108,7 +108,7 @@
             chart_income_pie.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             chart_income_pie.Legends.Add(legend1);
-            chart_income_pie.Location = new Point(16, 134);
+            chart_income_pie.Location = new Point(9, 134);
             chart_income_pie.Name = "chart_income_pie";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
@@ -125,7 +125,7 @@
             chart_expense_pie.ChartAreas.Add(chartArea2);
             legend2.Name = "Legend1";
             chart_expense_pie.Legends.Add(legend2);
-            chart_expense_pie.Location = new Point(815, 134);
+            chart_expense_pie.Location = new Point(805, 134);
             chart_expense_pie.Name = "chart_expense_pie";
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
@@ -158,11 +158,12 @@
             // 
             // chart_expense_column
             // 
+            chartArea3.AxisX.MajorGrid.Enabled = false;
             chartArea3.Name = "ChartArea1";
             chart_expense_column.ChartAreas.Add(chartArea3);
             legend3.Name = "Legend1";
             chart_expense_column.Legends.Add(legend3);
-            chart_expense_column.Location = new Point(1162, 134);
+            chart_expense_column.Location = new Point(1151, 134);
             chart_expense_column.Name = "chart_expense_column";
             series3.ChartArea = "ChartArea1";
             series3.Legend = "Legend1";
@@ -174,11 +175,12 @@
             // 
             // chart_income_column
             // 
+            chartArea4.AxisX.MajorGrid.Enabled = false;
             chartArea4.Name = "ChartArea1";
             chart_income_column.ChartAreas.Add(chartArea4);
             legend4.Name = "Legend1";
             chart_income_column.Legends.Add(legend4);
-            chart_income_column.Location = new Point(364, 134);
+            chart_income_column.Location = new Point(357, 134);
             chart_income_column.Name = "chart_income_column";
             series4.ChartArea = "ChartArea1";
             series4.Legend = "Legend1";
