@@ -28,18 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             panel1 = new Panel();
             groupBox1 = new GroupBox();
             label1 = new Label();
@@ -50,12 +50,22 @@
             label3 = new Label();
             chart_expense_column = new System.Windows.Forms.DataVisualization.Charting.Chart();
             chart_income_column = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            dgv_incomes = new DataGridView();
+            dgv_expenses = new DataGridView();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            panel2 = new Panel();
+            panel3 = new Panel();
             panel1.SuspendLayout();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)chart_income_pie).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chart_expense_pie).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chart_expense_column).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chart_income_column).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_incomes).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_expenses).BeginInit();
+            tableLayoutPanel1.SuspendLayout();
+            panel2.SuspendLayout();
+            panel3.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -104,34 +114,34 @@
             // 
             // chart_income_pie
             // 
-            chartArea1.Name = "ChartArea1";
-            chart_income_pie.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            chart_income_pie.Legends.Add(legend1);
-            chart_income_pie.Location = new Point(9, 134);
+            chartArea5.Name = "ChartArea1";
+            chart_income_pie.ChartAreas.Add(chartArea5);
+            legend5.Name = "Legend1";
+            chart_income_pie.Legends.Add(legend5);
+            chart_income_pie.Location = new Point(3, 3);
             chart_income_pie.Name = "chart_income_pie";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series1.Legend = "Legend1";
-            series1.Name = "IncomePie";
-            chart_income_pie.Series.Add(series1);
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series5.Legend = "Legend1";
+            series5.Name = "IncomePie";
+            chart_income_pie.Series.Add(series5);
             chart_income_pie.Size = new Size(344, 257);
             chart_income_pie.TabIndex = 1;
             chart_income_pie.Text = "chart1";
             // 
             // chart_expense_pie
             // 
-            chartArea2.Name = "ChartArea1";
-            chart_expense_pie.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            chart_expense_pie.Legends.Add(legend2);
-            chart_expense_pie.Location = new Point(805, 134);
+            chartArea6.Name = "ChartArea1";
+            chart_expense_pie.ChartAreas.Add(chartArea6);
+            legend6.Name = "Legend1";
+            chart_expense_pie.Legends.Add(legend6);
+            chart_expense_pie.Location = new Point(791, 3);
             chart_expense_pie.Name = "chart_expense_pie";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series2.Legend = "Legend1";
-            series2.Name = "ExpensePie";
-            chart_expense_pie.Series.Add(series2);
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series6.Legend = "Legend1";
+            series6.Name = "ExpensePie";
+            chart_expense_pie.Series.Add(series6);
             chart_expense_pie.Size = new Size(342, 257);
             chart_expense_pie.TabIndex = 2;
             chart_expense_pie.Text = "sdfgsdf";
@@ -140,7 +150,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            label2.Location = new Point(273, 403);
+            label2.Location = new Point(273, 386);
             label2.Name = "label2";
             label2.Size = new Size(173, 21);
             label2.TabIndex = 3;
@@ -150,7 +160,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            label3.Location = new Point(1067, 403);
+            label3.Location = new Point(1067, 386);
             label3.Name = "label3";
             label3.Size = new Size(178, 21);
             label3.TabIndex = 4;
@@ -158,50 +168,111 @@
             // 
             // chart_expense_column
             // 
-            chartArea3.AxisX.MajorGrid.Enabled = false;
-            chartArea3.Name = "ChartArea1";
-            chart_expense_column.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            chart_expense_column.Legends.Add(legend3);
-            chart_expense_column.Location = new Point(1151, 134);
+            chartArea7.AxisX.MajorGrid.Enabled = false;
+            chartArea7.Name = "ChartArea1";
+            chart_expense_column.ChartAreas.Add(chartArea7);
+            legend7.Name = "Legend1";
+            chart_expense_column.Legends.Add(legend7);
+            chart_expense_column.Location = new Point(1136, 3);
             chart_expense_column.Name = "chart_expense_column";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            chart_expense_column.Series.Add(series3);
+            series7.ChartArea = "ChartArea1";
+            series7.Legend = "Legend1";
+            series7.Name = "Series1";
+            chart_expense_column.Series.Add(series7);
             chart_expense_column.Size = new Size(458, 257);
             chart_expense_column.TabIndex = 6;
             chart_expense_column.Text = "sdfgsdf";
             // 
             // chart_income_column
             // 
-            chartArea4.AxisX.MajorGrid.Enabled = false;
-            chartArea4.Name = "ChartArea1";
-            chart_income_column.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            chart_income_column.Legends.Add(legend4);
-            chart_income_column.Location = new Point(357, 134);
+            chartArea8.AxisX.MajorGrid.Enabled = false;
+            chartArea8.Name = "ChartArea1";
+            chart_income_column.ChartAreas.Add(chartArea8);
+            legend8.Name = "Legend1";
+            chart_income_column.Legends.Add(legend8);
+            chart_income_column.Location = new Point(350, 3);
             chart_income_column.Name = "chart_income_column";
-            series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            chart_income_column.Series.Add(series4);
+            series8.ChartArea = "ChartArea1";
+            series8.Legend = "Legend1";
+            series8.Name = "Series1";
+            chart_income_column.Series.Add(series8);
             chart_income_column.Size = new Size(435, 257);
             chart_income_column.TabIndex = 5;
             chart_income_column.Text = "chart1";
+            // 
+            // dgv_incomes
+            // 
+            dgv_incomes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgv_incomes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_incomes.Dock = DockStyle.Fill;
+            dgv_incomes.Location = new Point(3, 3);
+            dgv_incomes.MultiSelect = false;
+            dgv_incomes.Name = "dgv_incomes";
+            dgv_incomes.ReadOnly = true;
+            dgv_incomes.RowHeadersVisible = false;
+            dgv_incomes.Size = new Size(817, 350);
+            dgv_incomes.TabIndex = 7;
+            // 
+            // dgv_expenses
+            // 
+            dgv_expenses.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgv_expenses.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_expenses.Dock = DockStyle.Fill;
+            dgv_expenses.Location = new Point(826, 3);
+            dgv_expenses.Name = "dgv_expenses";
+            dgv_expenses.RowHeadersVisible = false;
+            dgv_expenses.Size = new Size(818, 350);
+            dgv_expenses.TabIndex = 8;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.AutoSize = true;
+            tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tableLayoutPanel1.ColumnCount = 2;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Controls.Add(dgv_incomes, 0, 0);
+            tableLayoutPanel1.Controls.Add(dgv_expenses, 1, 0);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 1;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Size = new Size(1647, 356);
+            tableLayoutPanel1.TabIndex = 9;
+            // 
+            // panel2
+            // 
+            panel2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            panel2.Controls.Add(chart_income_pie);
+            panel2.Controls.Add(chart_expense_column);
+            panel2.Controls.Add(chart_income_column);
+            panel2.Controls.Add(chart_expense_pie);
+            panel2.Location = new Point(3, 108);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(1647, 269);
+            panel2.TabIndex = 10;
+            // 
+            // panel3
+            // 
+            panel3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel3.Controls.Add(tableLayoutPanel1);
+            panel3.Location = new Point(3, 418);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(1647, 356);
+            panel3.TabIndex = 11;
             // 
             // ucReport
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
-            Controls.Add(chart_expense_column);
-            Controls.Add(chart_income_column);
+            Controls.Add(panel3);
             Controls.Add(label3);
             Controls.Add(label2);
-            Controls.Add(chart_expense_pie);
-            Controls.Add(chart_income_pie);
             Controls.Add(panel1);
+            Controls.Add(panel2);
             Name = "ucReport";
             Size = new Size(1653, 777);
             panel1.ResumeLayout(false);
@@ -211,6 +282,12 @@
             ((System.ComponentModel.ISupportInitialize)chart_expense_pie).EndInit();
             ((System.ComponentModel.ISupportInitialize)chart_expense_column).EndInit();
             ((System.ComponentModel.ISupportInitialize)chart_income_column).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_incomes).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_expenses).EndInit();
+            tableLayoutPanel1.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -227,5 +304,10 @@
         private Label label3;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart_expense_column;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart_income_column;
+        private DataGridView dgv_incomes;
+        private DataGridView dgv_expenses;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Panel panel2;
+        private Panel panel3;
     }
 }

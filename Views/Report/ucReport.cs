@@ -65,8 +65,8 @@ namespace Personal_finance_app.Views.Report
                             transaction.Amount = Convert.ToDecimal(reader["AMOUNT"]);
                             transaction.Name = reader["NAME"].ToString() ?? "";
                             transaction.Desc = reader["DESC"].ToString() ?? "";
-                            transaction.CreatedAt = reader["CREATED_AT"].ToString() ?? "";
-                            transaction.UpdatedAt = reader["UPDATED_AT"].ToString() ?? "";
+                            transaction.CreatedAt = DateTime.ParseExact(reader["CREATED_AT"].ToString(), "yyyyMMddHHmmss", null).ToString("yyyy-MM-dd HH:mm:ss");
+                            transaction.UpdatedAt = DateTime.ParseExact(reader["UPDATED_AT"].ToString(), "yyyyMMddHHmmss", null).ToString("yyyy-MM-dd HH:mm:ss");
                             transaction.Type = (Enums.TypeEnum)Convert.ToInt32(reader["TYPE"]);
                             transaction.CategoryName = reader["CATEGORY_NAME"].ToString() ?? "";
                             transaction.CategoryId = Convert.ToInt32(reader["CATEGORY_ID"]);
@@ -115,6 +115,10 @@ namespace Personal_finance_app.Views.Report
             }
             chart_expense_pie.Series.Add(expensePieSeries);
             chart_expense_column.Series.Add(expenseColumnSeries);
+
+            // datagridview:
+            this.dgv_incomes.DataSource = incomes.Select(i => new { i.Name, i.CategoryName, i.Amount, i.Desc, i.CreatedAt }).ToList();
+            this.dgv_expenses.DataSource = expenses.Select(i => new { i.Name, i.CategoryName, i.Amount, i.Desc, i.CreatedAt }).ToList();
         }
     }
 }
