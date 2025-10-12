@@ -28,20 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucReport));
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             panel1 = new Panel();
             groupBox1 = new GroupBox();
+            btn_export = new Button();
             label1 = new Label();
             dpk_monthReport = new DateTimePicker();
             chart_income_pie = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -81,6 +83,7 @@
             // groupBox1
             // 
             groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox1.Controls.Add(btn_export);
             groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(dpk_monthReport);
             groupBox1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -90,6 +93,20 @@
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             groupBox1.Text = "Search";
+            // 
+            // btn_export
+            // 
+            btn_export.BackColor = SystemColors.Info;
+            btn_export.Image = (Image)resources.GetObject("btn_export.Image");
+            btn_export.ImageAlign = ContentAlignment.MiddleLeft;
+            btn_export.Location = new Point(189, 21);
+            btn_export.Name = "btn_export";
+            btn_export.Padding = new Padding(10, 0, 0, 0);
+            btn_export.Size = new Size(127, 39);
+            btn_export.TabIndex = 5;
+            btn_export.Text = "Export";
+            btn_export.UseVisualStyleBackColor = false;
+            btn_export.Click += btn_export_Click;
             // 
             // label1
             // 
@@ -114,34 +131,34 @@
             // 
             // chart_income_pie
             // 
-            chartArea5.Name = "ChartArea1";
-            chart_income_pie.ChartAreas.Add(chartArea5);
-            legend5.Name = "Legend1";
-            chart_income_pie.Legends.Add(legend5);
+            chartArea1.Name = "ChartArea1";
+            chart_income_pie.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            chart_income_pie.Legends.Add(legend1);
             chart_income_pie.Location = new Point(3, 3);
             chart_income_pie.Name = "chart_income_pie";
-            series5.ChartArea = "ChartArea1";
-            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series5.Legend = "Legend1";
-            series5.Name = "IncomePie";
-            chart_income_pie.Series.Add(series5);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series1.Legend = "Legend1";
+            series1.Name = "IncomePie";
+            chart_income_pie.Series.Add(series1);
             chart_income_pie.Size = new Size(344, 257);
             chart_income_pie.TabIndex = 1;
             chart_income_pie.Text = "chart1";
             // 
             // chart_expense_pie
             // 
-            chartArea6.Name = "ChartArea1";
-            chart_expense_pie.ChartAreas.Add(chartArea6);
-            legend6.Name = "Legend1";
-            chart_expense_pie.Legends.Add(legend6);
+            chartArea2.Name = "ChartArea1";
+            chart_expense_pie.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            chart_expense_pie.Legends.Add(legend2);
             chart_expense_pie.Location = new Point(791, 3);
             chart_expense_pie.Name = "chart_expense_pie";
-            series6.ChartArea = "ChartArea1";
-            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series6.Legend = "Legend1";
-            series6.Name = "ExpensePie";
-            chart_expense_pie.Series.Add(series6);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series2.Legend = "Legend1";
+            series2.Name = "ExpensePie";
+            chart_expense_pie.Series.Add(series2);
             chart_expense_pie.Size = new Size(342, 257);
             chart_expense_pie.TabIndex = 2;
             chart_expense_pie.Text = "sdfgsdf";
@@ -168,34 +185,34 @@
             // 
             // chart_expense_column
             // 
-            chartArea7.AxisX.MajorGrid.Enabled = false;
-            chartArea7.Name = "ChartArea1";
-            chart_expense_column.ChartAreas.Add(chartArea7);
-            legend7.Name = "Legend1";
-            chart_expense_column.Legends.Add(legend7);
+            chartArea3.AxisX.MajorGrid.Enabled = false;
+            chartArea3.Name = "ChartArea1";
+            chart_expense_column.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            chart_expense_column.Legends.Add(legend3);
             chart_expense_column.Location = new Point(1136, 3);
             chart_expense_column.Name = "chart_expense_column";
-            series7.ChartArea = "ChartArea1";
-            series7.Legend = "Legend1";
-            series7.Name = "Series1";
-            chart_expense_column.Series.Add(series7);
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            chart_expense_column.Series.Add(series3);
             chart_expense_column.Size = new Size(458, 257);
             chart_expense_column.TabIndex = 6;
             chart_expense_column.Text = "sdfgsdf";
             // 
             // chart_income_column
             // 
-            chartArea8.AxisX.MajorGrid.Enabled = false;
-            chartArea8.Name = "ChartArea1";
-            chart_income_column.ChartAreas.Add(chartArea8);
-            legend8.Name = "Legend1";
-            chart_income_column.Legends.Add(legend8);
+            chartArea4.AxisX.MajorGrid.Enabled = false;
+            chartArea4.Name = "ChartArea1";
+            chart_income_column.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            chart_income_column.Legends.Add(legend4);
             chart_income_column.Location = new Point(350, 3);
             chart_income_column.Name = "chart_income_column";
-            series8.ChartArea = "ChartArea1";
-            series8.Legend = "Legend1";
-            series8.Name = "Series1";
-            chart_income_column.Series.Add(series8);
+            series4.ChartArea = "ChartArea1";
+            series4.Legend = "Legend1";
+            series4.Name = "Series1";
+            chart_income_column.Series.Add(series4);
             chart_income_column.Size = new Size(435, 257);
             chart_income_column.TabIndex = 5;
             chart_income_column.Text = "chart1";
@@ -210,6 +227,7 @@
             dgv_incomes.Name = "dgv_incomes";
             dgv_incomes.ReadOnly = true;
             dgv_incomes.RowHeadersVisible = false;
+            dgv_incomes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv_incomes.Size = new Size(817, 350);
             dgv_incomes.TabIndex = 7;
             // 
@@ -221,6 +239,7 @@
             dgv_expenses.Location = new Point(826, 3);
             dgv_expenses.Name = "dgv_expenses";
             dgv_expenses.RowHeadersVisible = false;
+            dgv_expenses.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv_expenses.Size = new Size(818, 350);
             dgv_expenses.TabIndex = 8;
             // 
@@ -309,5 +328,6 @@
         private TableLayoutPanel tableLayoutPanel1;
         private Panel panel2;
         private Panel panel3;
+        private Button btn_export;
     }
 }

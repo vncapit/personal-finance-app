@@ -1,4 +1,7 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using iText.Kernel.Geom;
+using iText.Kernel.Pdf;
+using iText.Layout.Element;
+using Microsoft.Data.Sqlite;
 using Personal_finance_app.Helpers;
 using Personal_finance_app.Models;
 using System;
@@ -6,11 +9,24 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+
+using iText.Kernel.Colors;
+using iText.Kernel.Geom;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Layout.Properties;
+using iText.IO.Image;
+using Image = iText.Layout.Element.Image;
+using iText.Layout.Borders;
+using HorizontalAlignment = iText.Layout.Properties.HorizontalAlignment;
+
 
 namespace Personal_finance_app.Views.Report
 {
@@ -119,6 +135,123 @@ namespace Personal_finance_app.Views.Report
             // datagridview:
             this.dgv_incomes.DataSource = incomes.Select(i => new { i.Name, i.CategoryName, i.Amount, i.Desc, i.CreatedAt }).ToList();
             this.dgv_expenses.DataSource = expenses.Select(i => new { i.Name, i.CategoryName, i.Amount, i.Desc, i.CreatedAt }).ToList();
+        }
+
+        private void btn_export_Click(object sender, EventArgs e)
+        {
+            var month = this.dpk_monthReport.Value.ToString("MMMM");
+            var desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            var outputPath = System.IO.Path.Combine(desktop, $"{month}_report.pdf");
+
+            using var writer = new PdfWriter(outputPath);
+            using var pdf = new PdfDocument(writer);
+            var doc = new Document(pdf, PageSize.A4);
+            doc.SetMargins(20, 20, 20, 20);
+
+            // Header
+            var header = new Paragraph($"{month} Transactions Report").SimulateBold()
+                .SetFontSize(20)
+                .SetFontColor(ColorConstants.BLUE).SetMarginBottom(5);
+            doc.Add(header);
+
+            var incomeTitle = new Paragraph().Add($"{month} Incomes").SimulateBold().SetFontSize(12);
+            doc.Add(incomeTitle);
+
+            // table
+            var incomeTable = new Table(UnitValue.CreatePercentArray(new float[] { 2,2,1,3,2 })).UseAllAvailableWidth()
+                .SetTextAlignment(TextAlignment.CENTER);
+            incomeTable.AddHeaderCell(new Cell().Add(new Paragraph("Name")).SimulateBold());
+            incomeTable.AddHeaderCell(new Cell().Add(new Paragraph("Category")).SimulateBold());
+            incomeTable.AddHeaderCell(new Cell().Add(new Paragraph("Amount")).SimulateBold());
+            incomeTable.AddHeaderCell(new Cell().Add(new Paragraph("Description")).SimulateBold());
+            incomeTable.AddHeaderCell(new Cell().Add(new Paragraph("Created At")).SimulateBold());
+            incomeTable.SetFontSize(9);
+
+            for (int i = 0; i < dgv_incomes.Rows.Count; i++)
+            {
+                for (int j = 0; j < dgv_incomes.Rows[i].Cells.Count; j++)
+                {
+                    incomeTable.AddCell(dgv_incomes.Rows[i].Cells[j].Value.ToString());
+                }
+            }
+            doc.Add(incomeTable);
+
+            var incomeChartLayoutTable = new Table(UnitValue.CreatePercentArray(new float[] { 45,55 })).UseAllAvailableWidth().SetMarginTop(5);
+            using (var chartImg = new MemoryStream())
+            {
+                chart_income_pie.SaveImage(chartImg, ChartImageFormat.Png);
+                incomeChartLayoutTable.AddCell(
+                    new Cell()
+                    .SetHeight(140)
+                    .SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                    .SetTextAlignment(TextAlignment.CENTER)
+                    .Add(new Image(ImageDataFactory.Create(chartImg.ToArray())).SetAutoScale(true).SetHorizontalAlignment(HorizontalAlignment.CENTER))
+                    .SetBorder(Border.NO_BORDER));
+            }
+
+            using (var chartImg = new MemoryStream())
+            {
+                chart_income_column.SaveImage(chartImg, ChartImageFormat.Png);
+                incomeChartLayoutTable.AddCell(
+                    new Cell()
+                    .SetHeight(140)
+                    .SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                    .SetTextAlignment(TextAlignment.CENTER)
+                    .Add(new Image(ImageDataFactory.Create(chartImg.ToArray())).SetAutoScale(true).SetHorizontalAlignment(HorizontalAlignment.CENTER))
+                    .SetBorder(Border.NO_BORDER));
+            }
+
+            doc.Add(incomeChartLayoutTable);
+
+            // expenses
+            var expenseTitle = new Paragraph().Add($"{month} Expenses").SimulateBold().SetFontSize(12);
+            doc.Add(expenseTitle);
+
+            var expenseTable = new Table(UnitValue.CreatePercentArray(new float[] { 2, 2, 1, 3, 2 })).UseAllAvailableWidth()
+                .SetTextAlignment(TextAlignment.CENTER);
+            expenseTable.AddHeaderCell(new Cell().Add(new Paragraph("Name")).SimulateBold());
+            expenseTable.AddHeaderCell(new Cell().Add(new Paragraph("Category")).SimulateBold());
+            expenseTable.AddHeaderCell(new Cell().Add(new Paragraph("Amount")).SimulateBold());
+            expenseTable.AddHeaderCell(new Cell().Add(new Paragraph("Description")).SimulateBold());
+            expenseTable.AddHeaderCell(new Cell().Add(new Paragraph("Created At")).SimulateBold());
+            expenseTable.SetFontSize(9);
+
+            for (int i = 0; i < dgv_expenses.Rows.Count; i++)
+            {
+                for (int j = 0; j < dgv_expenses.Rows[i].Cells.Count; j++)
+                {
+                    expenseTable.AddCell(dgv_expenses.Rows[i].Cells[j].Value.ToString());
+                }
+            }
+            doc.Add(expenseTable);
+
+            var expenseChartLayoutTable = new Table(UnitValue.CreatePercentArray(new float[] { 45, 55 })).UseAllAvailableWidth().SetMarginTop(5);
+            using (var chartImg = new MemoryStream())
+            {
+                chart_expense_pie.SaveImage(chartImg, ChartImageFormat.Png);
+                expenseChartLayoutTable.AddCell(
+                    new Cell()
+                    .SetHeight(140)
+                    .SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                    .SetTextAlignment(TextAlignment.CENTER)
+                    .Add(new Image(ImageDataFactory.Create(chartImg.ToArray())).SetAutoScale(true).SetHorizontalAlignment(HorizontalAlignment.CENTER))
+                    .SetBorder(Border.NO_BORDER));
+            }
+
+            using (var chartImg = new MemoryStream())
+            {
+                chart_expense_column.SaveImage(chartImg, ChartImageFormat.Png);
+                expenseChartLayoutTable.AddCell(
+                    new Cell()
+                    .SetHeight(140)
+                    .SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                    .SetTextAlignment(TextAlignment.CENTER)
+                    .Add(new Image(ImageDataFactory.Create(chartImg.ToArray())).SetAutoScale(true).SetHorizontalAlignment(HorizontalAlignment.CENTER))
+                    .SetBorder(Border.NO_BORDER));
+            }
+
+            doc.Add(expenseChartLayoutTable);
+
         }
     }
 }
