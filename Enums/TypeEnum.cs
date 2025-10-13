@@ -17,4 +17,10 @@ namespace Personal_finance_app.Enums
         Create = 0,
         Update = 1
     }
+
+    public enum RoleEnum
+    {
+        Base = 0,
+        Admin = 1
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using Personal_finance_app.Views;
 using Personal_finance_app.Views.Report;
 using Personal_finance_app.Views.Transaction;
+using Personal_finance_app.Views.User;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -64,6 +65,9 @@ namespace Personal_finance_app.Forms
                         break;
                     case "report":
                         uc = new ucReport();
+                        break;
+                    case "sys_user":
+                        uc = new ucUser();
                         break;
                     default:
                         break;

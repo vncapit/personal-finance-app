@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Personal_finance_app.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace Personal_finance_app.Models
         public string Password { get; set; }
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
+        public RoleEnum Role { get; set; } = RoleEnum.Base;
 
     }
 }
