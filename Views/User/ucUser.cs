@@ -18,17 +18,53 @@ namespace Personal_finance_app.Views.User
         public ucUser()
         {
             InitializeComponent();
-            dgv_users.AutoSize = true;
+
+            // Init component
+            dgv_users.AutoGenerateColumns = false;
+            dgv_users.MultiSelect = false;
+            dgv_users.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv_users.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv_users.RowHeadersVisible = false;
+            dgv_users.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+            dgv_users.Columns.Add(new DataGridViewTextBoxColumn { Name = "No", DataPropertyName = "No", HeaderText = "No.", Visible = true, Width = 140, DisplayIndex = 0 });
+            dgv_users.Columns.Add(new DataGridViewTextBoxColumn { Name = "Username", DataPropertyName = "Username", HeaderText = "Username", Visible = true, DisplayIndex = 1, AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
+            dgv_users.Columns.Add(new DataGridViewTextBoxColumn { Name = "Role", DataPropertyName = "Role", Visible = true, HeaderText = "Role", Width = 250, DisplayIndex = 2 });
+            dgv_users.Columns.Add(new DataGridViewTextBoxColumn { Name = "CreatedAt", DataPropertyName = "CreatedAt", HeaderText = "Created At",  Visible = true, Width = 250, DisplayIndex = 3 });
+            dgv_users.Columns.Add(new DataGridViewTextBoxColumn { Name = "UpdatedAt", DataPropertyName = "UpdatedAt", Visible = true, HeaderText = "Updated At", Width = 250, DisplayIndex = 4 });
+
         }
 
         private void btn_add_Click(object sender, EventArgs e)
         {
-
+            if( new CrudForm(CrudEnum.Create).ShowDialog() == DialogResult.OK)
+            {
+                InitData();
+            }
         }
 
         private void btn_modify_Click(object sender, EventArgs e)
         {
-
+            if( dgv_users.SelectedRows.Count > 0)
+            {
+                var selectedRow = dgv_users.SelectedRows[0];
+                var user = new UserModel
+                {
+                    Id = Convert.ToInt32(selectedRow.Cells["Id"].Value),
+                    Username = selectedRow.Cells["Username"].Value.ToString(),
+                    Role = (RoleEnum)Convert.ToInt32(selectedRow.Cells["Role"].Value),
+                    CreatedAt = selectedRow.Cells["CreatedAt"].Value.ToString(),
+                    UpdatedAt = selectedRow.Cells["UpdatedAt"].Value.ToString()
+                };
+                var crudForm = new CrudForm(CrudEnum.Update, user);
+                if (crudForm.ShowDialog() == DialogResult.OK)
+                {
+                    InitData();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a user to modify.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private void btn_remove_Click(object sender, EventArgs e)
@@ -38,7 +74,7 @@ namespace Personal_finance_app.Views.User
 
         private void InitData()
         {
-            dgv_users.Rows.Clear();
+            dgv_users.DataSource = null;
             var users = new List<UserModel>();
             using (var conn = Helpers.DbHelper.GetConnection())
             {
@@ -63,12 +99,13 @@ namespace Personal_finance_app.Views.User
                     }
                 }
             }
-            dgv_users.DataSource = users.Select(u => new {
+            dgv_users.DataSource = users.Select((u, index) => new {
+                No = index + 1,
                 u.Id,
                 u.Username,
                 u.Role,
-                CreatedAt = DateTime.ParseExact(u.CreatedAt, "yyyyMMddHHmmss", null),
-                UpdatedAt = DateTime.ParseExact(u.UpdatedAt, "yyyyMMddHHmmss", null) 
+                CreatedAt = DateTime.ParseExact(u.CreatedAt, "yyyyMMddHHmmss", null).ToString("yyyy-MM-dd HH:mm:ss"),
+                UpdatedAt = DateTime.ParseExact(u.UpdatedAt, "yyyyMMddHHmmss", null).ToString("yyyy-MM-dd HH:mm:ss"),
             }).ToList();
         }
 

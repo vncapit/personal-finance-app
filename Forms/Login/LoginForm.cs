@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using Personal_finance_app.Helpers;
 using Microsoft.Data.Sqlite;
 using Personal_finance_app.Models;
+using Personal_finance_app.Enums;
 
 namespace Personal_finance_app.Forms
 {
@@ -44,11 +45,13 @@ namespace Personal_finance_app.Forms
                                 var dbUsername = reader["USERNAME"].ToString();
                                 var dbCreatedAt = reader["CREATED_AT"].ToString();
                                 var dbUpdatedAt = reader["UPDATED_AT"].ToString();
+                                var role = (RoleEnum)Convert.ToInt32(reader["ROLE"]);
                                 UserHelper.User = new UserModel
                                 {
                                     Id = dbId,
                                     Username = dbUsername,
                                     Password = dbPassword,
+                                    Role = role,
                                     CreatedAt = dbCreatedAt,
                                     UpdatedAt = dbUpdatedAt
                                 };
