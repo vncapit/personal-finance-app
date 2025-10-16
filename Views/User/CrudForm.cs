@@ -47,10 +47,6 @@ namespace Personal_finance_app.Views.User
                 Text = "Modify user";
                 btn_save.Text = "Save";
                 tbx_username.Enabled = false;
-                if(UserHelper.checkSuperAdmin(user))
-                {
-                    cbx_role.Enabled = false;
-                }
 
                 if (user != null)
                 {
@@ -61,6 +57,11 @@ namespace Personal_finance_app.Views.User
                 {
                     MessageBox.Show("User data is not provided for update operation.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Close();
+                }
+
+                if (UserHelper.checkSuperAdmin(user))
+                {
+                    cbx_role.Enabled = false;
                 }
             }
 
@@ -90,7 +91,7 @@ namespace Personal_finance_app.Views.User
                 return;
             }
 
-            if( UserHelper.User.Role != RoleEnum.Admin && (RoleEnum)cbx_role.SelectedValue == RoleEnum.Admin)
+            if(!UserHelper.isSuperAdmin() && (RoleEnum)cbx_role.SelectedValue == RoleEnum.Admin)
             {
                 MessageBox.Show("You do not have permission to create an Admin user.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -132,7 +133,7 @@ namespace Personal_finance_app.Views.User
                 }
                 catch (Exception exception)
                 {
-                    MessageBox.Show($"Failed to add category, details: {exception.Message}");
+                    MessageBox.Show($"Failed to add user, details: {exception.Message}");
                 }
         }
 
@@ -142,31 +143,49 @@ namespace Personal_finance_app.Views.User
             {
                 try
                 {
-                    var sql = "SELECT COUNT(1) FROM CATEGORIES WHERE LOWER(NAME) = @NAME AND ID <> @ID";
+                    // Update to other
+                    if(UserHelper.User.Id != User.Id)
+                    {
+                        if(!UserHelper.isSuperAdmin() && (RoleEnum)cbx_role.SelectedValue == RoleEnum.Admin)
+                        MessageBox.Show("You don't have permission to perform this action", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    else
+                    {
+                        if(UserHelper.User.Role != RoleEnum.Admin && (RoleEnum)cbx_role.SelectedValue == RoleEnum.Admin)
+                        {
+                            MessageBox.Show("You don't have permission to perform this action", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(this.tbx_password.Text))
+                    {
+                        if (this.tbx_password.Text != this.tbx_confirmPassword.Text)
+                        {
+                            MessageBox.Show("Password and Confirm password do not match!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        if (this.tbx_password.Text.Length < 6)
+                        {
+                            MessageBox.Show("Password must be at least 6 characters long.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+
+                    var sql = string.IsNullOrWhiteSpace(tbx_password.Text) ? "UPDATE USERS SET ROLE = @ROLE WHERE ID = @ID" : "UPDATE USERS SET ROLE = @ROLE, PASSWORD = @PASSWORD WHERE ID = @ID";
                     using (var conn = DbHelper.GetConnection())
                     {
                         using (var cmd = new SqliteCommand(sql, conn))
                         {
                             cmd.Parameters.Clear();
-                            cmd.Parameters.AddWithValue("NAME", tbx_username.Text.Trim().ToLower());
+                            cmd.Parameters.AddWithValue("ROLE", (RoleEnum)cbx_role.SelectedValue);
                             cmd.Parameters.AddWithValue("ID", User.Id);
-                            var count = Convert.ToInt32(cmd.ExecuteScalar());
-                            if (count > 0)
+                            if(!string.IsNullOrWhiteSpace(tbx_password.Text))
                             {
-                                MessageBox.Show($"Category with name {tbx_username.Text} existed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return;
+                                cmd.Parameters.AddWithValue("PASSWORD", HashHelper.GetMd5Hash(this.tbx_password.Text.Trim()));
                             }
-                        }
-                        sql = "UPDATE CATEGORIES SET TYPE = @TYPE, NAME = @NAME, UPDATED_AT = @UPDATED_AT WHERE ID = @ID";
-                        using (var cmd = new SqliteCommand(sql, conn))
-                        {
-                            cmd.Parameters.Clear();
-                            cmd.Parameters.AddWithValue("TYPE", cbx_role.SelectedValue);
-                            cmd.Parameters.AddWithValue("NAME", tbx_username.Text.Trim());
-                            var timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
-                            cmd.Parameters.AddWithValue("UPDATED_AT", timestamp);
-                            cmd.Parameters.AddWithValue("ID", User.Id);
-                            var count = cmd.ExecuteNonQuery();
+                            cmd.ExecuteNonQuery();
                             DialogResult = DialogResult.OK;
                             Close();
                         }
@@ -174,7 +193,7 @@ namespace Personal_finance_app.Views.User
                 }
                 catch (Exception exception)
                 {
-                    MessageBox.Show($"Failed to update category, details: {exception.Message}");
+                    MessageBox.Show($"Failed to update user, details: {exception.Message}");
                 }
             }
         }

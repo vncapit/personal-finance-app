@@ -16,5 +16,10 @@ namespace Personal_finance_app.Helpers
         {
             return user.Username == "admin";
         }
+
+        public static bool isSuperAdmin()
+        {
+            return User.Username == "admin";
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using Personal_finance_app.Enums;
+using Personal_finance_app.Helpers;
 using Personal_finance_app.Models;
 using System;
 using System.Collections.Generic;
@@ -69,7 +70,28 @@ namespace Personal_finance_app.Views.User
 
         private void btn_remove_Click(object sender, EventArgs e)
         {
-
+            if(dgv_users.SelectedRows.Count > 0)
+            {
+                var row = dgv_users.SelectedRows[0];
+                if (MessageBox.Show($"Are you sure you want to remove user: {row.Cells["Username"].Value.ToString()}") != DialogResult.OK) return;
+                try
+                {
+                    using(var conn = DbHelper.GetConnection())
+                    {
+                        var sql = "DELETE FROM USERS WHERE ID = @ID";
+                        using(var cmd = new SqliteCommand(sql, conn))
+                        {
+                            cmd.Parameters.AddWithValue("ID", Convert.ToInt32(row.Cells["Id"].Value));
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show($"Failed to delete user, details: {exception.Message}");
+                }
+                this.InitData();
+            }
         }
 
         private void InitData()
