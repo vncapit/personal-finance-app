@@ -101,6 +101,10 @@ namespace Personal_finance_app.Views.User
             using (var conn = Helpers.DbHelper.GetConnection())
             {
                 string query = "SELECT id, username, role, created_at, updated_at FROM users";
+                if(!UserHelper.isSuperAdmin())
+                {
+                    query += " WHERE username != 'admin'";
+                }
                 using (var cmd = new SqliteCommand(query, conn))
                 {
                     using (var reader = cmd.ExecuteReader())
