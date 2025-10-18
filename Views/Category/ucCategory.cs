@@ -26,6 +26,12 @@ namespace Personal_finance_app.Views
 
         private void initControls()
         {
+            if(UserHelper.User.Role == RoleEnum.Base)
+            {
+                this.btn_remove.Enabled = false;
+                btn_modify.Enabled = false;
+            }
+
             this.cbx_type.Items.Clear();
             this.cbx_type.DisplayMember = "Name";
             this.cbx_type.ValueMember = "Value";

@@ -396,5 +396,21 @@ namespace Personal_finance_app.Views.Transaction
                 }
             }
         }
+
+        private void dgv_transactions_SelectionChanged(object sender, EventArgs e)
+        {
+            if(this.dgv_transactions.SelectedRows.Count == 1)
+            {
+                if(UserHelper.User.Role == RoleEnum.Base)
+                {
+                    var createdBy = dgv_transactions.SelectedRows[0].Cells["CREATED_BY"].Value.ToString().ToLower();
+                    if(UserHelper.User.Username.ToLower() != createdBy)
+                    {
+                        this.btn_modify.Enabled = false;
+                        this.btn_remove.Enabled = false;
+                    }
+                }
+            }
+        }
     }
 }

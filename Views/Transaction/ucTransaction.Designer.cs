@@ -90,6 +90,7 @@
             dgv_transactions.TabIndex = 0;
             dgv_transactions.CellContentClick += dgv_transactions_CellContentClick;
             dgv_transactions.CellFormatting += dgv_transactions_CellFormatting;
+            dgv_transactions.SelectionChanged += dgv_transactions_SelectionChanged;
             // 
             // btn_remove
             // 

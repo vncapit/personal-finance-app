@@ -1,4 +1,5 @@
-﻿using Personal_finance_app.Views;
+﻿using Personal_finance_app.Helpers;
+using Personal_finance_app.Views;
 using Personal_finance_app.Views.Report;
 using Personal_finance_app.Views.Transaction;
 using Personal_finance_app.Views.User;
@@ -31,11 +32,14 @@ namespace Personal_finance_app.Forms
             finance.Nodes.Add(new TreeNode { Text = "Transaction", Tag = "transaction" });
             finance.Nodes.Add(new TreeNode { Text = "Category ", Tag = "category" });
             finance.Nodes.Add(new TreeNode { Text = "Report ", Tag = "report" });
-            TreeNode system = new TreeNode { Text = "System", Tag = "system" };
-            system.Nodes.Add(new TreeNode { Text = "User Management", Tag = "sys_user" });
 
             this.treev_menus.Nodes.Add(finance);
-            this.treev_menus.Nodes.Add(system);
+            if (UserHelper.User.Role == Enums.RoleEnum.Admin)
+            {
+                TreeNode system = new TreeNode { Text = "System", Tag = "system" };
+                system.Nodes.Add(new TreeNode { Text = "User Management", Tag = "sys_user" });
+                this.treev_menus.Nodes.Add(system);
+            }
         }
 
         private void firstLoad()
