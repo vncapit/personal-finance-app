@@ -26,6 +26,7 @@ using iText.IO.Image;
 using Image = iText.Layout.Element.Image;
 using iText.Layout.Borders;
 using HorizontalAlignment = iText.Layout.Properties.HorizontalAlignment;
+using System.Diagnostics;
 
 
 namespace Personal_finance_app.Views.Report
@@ -145,6 +146,9 @@ namespace Personal_finance_app.Views.Report
             saveDialog.Title = "Save Report PDF";
             saveDialog.Filter = "PDF files (*.pdf)|*.pdf";
             saveDialog.FileName = $"{month}_report.pdf";
+
+            bool success = false;
+
             if (saveDialog.ShowDialog() == DialogResult.OK)
             {
                 this.Cursor = Cursors.WaitCursor;
@@ -259,6 +263,7 @@ namespace Personal_finance_app.Views.Report
                     }
 
                     doc.Add(expenseChartLayoutTable);
+                    success = true;
                 }
                 catch (Exception)
                 {
@@ -267,6 +272,23 @@ namespace Personal_finance_app.Views.Report
                 finally
                 {
                     Cursor = Cursors.Default;
+                }
+
+                if(success)
+                {
+                    try
+                    {
+                        var psi = new ProcessStartInfo
+                        {
+                            FileName = saveDialog.FileName,
+                            UseShellExecute = true
+                        };
+                        Process.Start(psi);
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
                 }
             }
         }
